@@ -1,7 +1,5 @@
 from flask import Flask, request, jsonify
-from flask_cors import CORS
 import os
-from werkzeug.utils import secure_filename
 import boto3
 from dotenv import load_dotenv
 
@@ -46,7 +44,6 @@ def detect_text_in_image(image_bytes):
 
 
 def detect_text():
-    print("Request received")
     if "image" not in request.files:
         return jsonify({"error": "No image file provided"}), 400
 
