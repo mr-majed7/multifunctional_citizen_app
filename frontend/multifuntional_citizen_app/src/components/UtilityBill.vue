@@ -101,7 +101,6 @@
         this.loading = true;
         setTimeout(() => {
           this.loading = false;
-          // Mock API response
           this.bills = [
             {
               type: "gas",
@@ -122,13 +121,11 @@
               status: true,
             },
           ];
-        }, 1000); // Simulating network delay
+        }, 1000);
       },
       redirectToPayment(index) {
         const bill = this.bills[index];
-        const paymentLink = `/payment?&amount=${bill.amount}`;
-        window.location.href = paymentLink;
-        // Simulating the redirection process in a real app, the payment page would handle this
+        this.$router.push(`/payment?amount=${bill.amount}`);
       },
       handlePaymentSuccess() {
         this.interval = setInterval(() => {
@@ -139,7 +136,7 @@
             this.snackbarMessage = "Redirecting back to the app...";
             this.snackbar = true;
             setTimeout(() => {
-              window.location.href = "/"; // Redirect to the app's main page
+              this.$router.push("/");
             }, 1000);
           }
         }, 1000);
