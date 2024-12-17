@@ -127,20 +127,6 @@
         const bill = this.bills[index];
         this.$router.push(`/payment?amount=${bill.amount}`);
       },
-      handlePaymentSuccess() {
-        this.interval = setInterval(() => {
-          if (this.countdown > 0) {
-            this.countdown--;
-          } else {
-            clearInterval(this.interval);
-            this.snackbarMessage = "Redirecting back to the app...";
-            this.snackbar = true;
-            setTimeout(() => {
-              this.$router.push("/");
-            }, 1000);
-          }
-        }, 1000);
-      },
     },
   };
   </script>

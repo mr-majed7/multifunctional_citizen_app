@@ -111,13 +111,13 @@ export default {
       cvv: "",
       valid: false,
       dialog: false,
-      paymentState: "processing", // "processing" or "success"
+      paymentState: "processing",
       countdown: 5,
       interval: null,
-      amount: 0, // Default value for amount
-      paidAmount: 0, // To store the paid amount for receipt
-      paymentDate: "", // To store the payment date
-      paymentId: "", // To store the random payment ID
+      amount: 0,
+      paidAmount: 0, 
+      paymentDate: "",
+      paymentId: "",
       rules: {
         required: (value) => !!value || "Field is required",
         cardNumber: (value) =>
@@ -129,13 +129,11 @@ export default {
     };
   },
   created() {
-    // Get the 'amount' from query parameters
     const queryAmount = this.$route.query.amount;
     this.amount = queryAmount ? parseFloat(queryAmount) : 0;
   },
   methods: {
     processPayment() {
-      // Simulate payment processing
       this.dialog = true;
       this.paymentState = "processing";
       setTimeout(() => {
@@ -144,7 +142,7 @@ export default {
         this.paymentDate = new Date().toLocaleString();
         this.paymentId = Math.random().toString(36).slice(2, 12).toUpperCase();
         this.startCountdown();
-      }, 3000); // Simulate a delay of 3 seconds for processing
+      }, 3000);
     },
     startCountdown() {
       this.interval = setInterval(() => {
@@ -158,10 +156,9 @@ export default {
     },
     redirectToApp() {
       this.dialog = false;
-      this.$router.push("/"); // Redirect using vue-router
+      this.$router.push("/");
     },
     maskCardNumber(cardNumber) {
-    // Ensure the card number is at least 16 digits
     if (cardNumber.length === 16) {
       return `${cardNumber.slice(0, 4)} ******** ${cardNumber.slice(-4)}`;
     }
@@ -175,17 +172,15 @@ export default {
 
     try {
       const doc = new jsPDF();
-      let y = 20; // Starting Y-coordinate for text
+      let y = 20;
 
-      // Add title
       doc.setFontSize(16);
       doc.text("Payment Receipt", 20, y);
-      y += 10; // Adjust Y-coordinate for the next line
+      y += 10;
 
-      // Add details
       doc.setFontSize(12);
       doc.text(`Cardholder Name: ${this.cardholderName}`, 20, y);
-      y += 10; // Adjust Y-coordinate for the next line
+      y += 10; 
       doc.text(`Card Number: ${this.maskCardNumber(this.cardNumber)}`, 20, y);
       y += 10;
       doc.text(`Amount Paid: ${this.paidAmount} BDT`, 20, y);
@@ -194,7 +189,6 @@ export default {
       y += 10;
       doc.text(`Payment ID: ${this.paymentId}`, 20, y);
 
-      // Save as PDF
       doc.save(`Payment_Receipt_${this.paymentId}.pdf`);
     } catch (error) {
       console.error("Error generating receipt PDF:", error);

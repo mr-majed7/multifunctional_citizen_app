@@ -10,11 +10,9 @@
 
 <script>
 
-import NIDVerify from './components/NIDVerify.vue';
 
 export default {
   components: {
-    NIDVerify,
   }
 }
 
