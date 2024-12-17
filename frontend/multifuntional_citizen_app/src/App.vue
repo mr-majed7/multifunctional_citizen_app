@@ -3,6 +3,7 @@
     <v-main>
       <v-container>
         <router-view></router-view>
+        <HelloWorld></HelloWorld>
       </v-container>
     </v-main>
   </v-app>
@@ -10,11 +11,10 @@
 
 <script>
 
-import NIDVerify from './components/NIDVerify.vue';
-
+import HelloWorld from './components/HelloWorld.vue';
 export default {
   components: {
-    NIDVerify,
+    HelloWorld
   }
 }
 
