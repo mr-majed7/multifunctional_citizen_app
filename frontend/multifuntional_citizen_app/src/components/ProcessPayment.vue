@@ -73,11 +73,11 @@
         </v-card-title>
 
         <v-card-text class="text-center">
-          <div v-if="paymentState === 'processing'">
+          <div v-if="paymentState === 'processing'" class="payment-processing">
             <v-progress-circular indeterminate color="primary" size="64"></v-progress-circular>
             <p class="mt-4">Processing your payment, please wait...</p>
           </div>
-          <div v-else-if="paymentState === 'success'">
+          <div v-else-if="paymentState === 'success'" class="payment-success">
             <v-icon color="success" size="64">mdi-check-circle</v-icon>
             <h3 class="mt-4 mb-2">Payment Receipt</h3>
             <v-list dense>
@@ -220,11 +220,9 @@ export default {
 </script>
 
 <style scoped>
-/* .gradient-background {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-} */
 
 .payment-card {
+  background: linear-gradient(135deg, #12100e 0%, #2b4162 100%);
   border-radius: 16px;
   overflow: hidden;
 }

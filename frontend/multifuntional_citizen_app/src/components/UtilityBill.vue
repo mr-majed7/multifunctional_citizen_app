@@ -130,11 +130,8 @@ export default {
 </script>
 
 <style scoped>
-/* .gradient-background {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-} */
-
 .bill-card {
+  background: linear-gradient(135deg, #12100e 0%, #2b4162 100%);;
   border-radius: 16px;
   overflow: hidden;
   transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
@@ -146,6 +143,7 @@ export default {
 }
 
 .v-expansion-panel {
+  background: linear-gradient(135deg, #12100e 0%, #2b4162 100%);
   border-radius: 8px !important;
   margin-bottom: 16px;
 }
@@ -156,6 +154,10 @@ export default {
 
 .v-expansion-panel-header {
   padding: 16px;
+}
+
+.v-card {
+  background: linear-gradient(135deg, #12100e 0%, #2b4162 100%);
 }
 
 .v-expansion-panel-content__wrap {

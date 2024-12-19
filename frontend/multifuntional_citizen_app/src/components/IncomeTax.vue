@@ -159,6 +159,7 @@ export default {
 
 <style scoped>
 .tax-card {
+  background: linear-gradient(135deg, #12100e 0%, #2b4162 100%);
   border-radius: 16px;
   overflow: hidden;
   transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
@@ -170,6 +171,7 @@ export default {
 }
 
 .v-list-item {
+  background: linear-gradient(135deg, #12100e 0%, #2b4162 100%);
   border-bottom: 1px solid rgba(0, 0, 0, 0.12);
 }
 
