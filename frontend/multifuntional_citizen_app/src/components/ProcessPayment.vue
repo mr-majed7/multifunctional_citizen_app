@@ -1,38 +1,38 @@
 <template>
   <v-app>
-    <v-container>
-      <v-row justify="center">
-        <v-col cols="12" md="6">
-          <v-card>
-            <v-card-title>
-              <span class="text-h5">Payment Information</span>
+    <v-container fluid class="fill-height gradient-background">
+      <v-row justify="center" align="center">
+        <v-col cols="12" sm="8" md="6" lg="4">
+          <v-card class="payment-card" elevation="10">
+            <v-card-title class="text-h4 font-weight-bold text-center py-4">
+              Payment Information
             </v-card-title>
 
-            <v-divider></v-divider>
-
             <v-card-text>
-              <v-form ref="paymentForm" v-model="valid">
+              <v-form ref="form" v-model="valid" @submit.prevent="processPayment">
                 <v-text-field
-                  label="Cardholder Name"
                   v-model="cardholderName"
+                  label="Cardholder Name"
                   :rules="[rules.required]"
                   outlined
                   dense
+                  class="mb-2"
                 ></v-text-field>
 
                 <v-text-field
-                  label="Card Number"
                   v-model="cardNumber"
+                  label="Card Number"
                   :rules="[rules.required, rules.cardNumber]"
                   outlined
                   dense
+                  class="mb-2"
                 ></v-text-field>
 
                 <v-row>
                   <v-col cols="6">
                     <v-text-field
-                      label="Expiry Date (MM/YY)"
                       v-model="expiryDate"
+                      label="Expiry Date (MM/YY)"
                       :rules="[rules.required, rules.expiryDate]"
                       outlined
                       dense
@@ -40,8 +40,8 @@
                   </v-col>
                   <v-col cols="6">
                     <v-text-field
-                      label="CVV"
                       v-model="cvv"
+                      label="CVV"
                       :rules="[rules.required, rules.cvv]"
                       outlined
                       dense
@@ -50,58 +50,77 @@
                 </v-row>
 
                 <v-btn
-                  color="success"
+                  color="primary"
                   :disabled="!valid"
                   block
-                  @click="processPayment"
+                  x-large
+                  class="mt-4"
+                  type="submit"
                 >
                   Pay {{ amount }} BDT
                 </v-btn>
               </v-form>
             </v-card-text>
           </v-card>
-
-          <v-dialog v-model="dialog" max-width="400">
-            <v-card>
-              <v-card-title>
-                <span class="text-h6">
-                  {{ paymentState === "processing" ? "Processing Payment" : "Payment Successful" }}
-                </span>
-              </v-card-title>
-
-              <v-card-text>
-                <div v-if="paymentState === 'processing'" class="text-center">
-                  <v-progress-circular indeterminate color="primary"></v-progress-circular>
-                  <p>Processing your payment, please wait...</p>
-                </div>
-                <div v-else-if="paymentState === 'success'">
-                  <p>Payment Receipt:</p>
-                  <ul>
-                    <li><strong>Amount Paid:</strong> {{ paidAmount }} BDT</li>
-                    <li><strong>Payment Date:</strong> {{ paymentDate }}</li>
-                    <li><strong>Payment ID:</strong> {{ paymentId }}</li>
-                  </ul>
-                  <v-btn color="primary" text @click="downloadReceipt">
-                    Download Receipt
-                  </v-btn>
-                </div>
-              </v-card-text>
-
-              <v-card-actions>
-                <v-btn v-if="paymentState === 'success'" color="primary" text @click="redirectToApp">
-                  Redirect Now
-                </v-btn>
-              </v-card-actions>
-            </v-card>
-          </v-dialog>
         </v-col>
       </v-row>
     </v-container>
+
+    <v-dialog v-model="dialog" max-width="400">
+      <v-card>
+        <v-card-title class="text-h5 text-center">
+          {{ paymentState === "processing" ? "Processing Payment" : "Payment Successful" }}
+        </v-card-title>
+
+        <v-card-text class="text-center">
+          <div v-if="paymentState === 'processing'">
+            <v-progress-circular indeterminate color="primary" size="64"></v-progress-circular>
+            <p class="mt-4">Processing your payment, please wait...</p>
+          </div>
+          <div v-else-if="paymentState === 'success'">
+            <v-icon color="success" size="64">mdi-check-circle</v-icon>
+            <h3 class="mt-4 mb-2">Payment Receipt</h3>
+            <v-list dense>
+              <v-list-item>
+                <v-list-item-content>
+                  <v-list-item-title>Amount Paid:</v-list-item-title>
+                  <v-list-item-subtitle>{{ paidAmount }} BDT</v-list-item-subtitle>
+                </v-list-item-content>
+              </v-list-item>
+              <v-list-item>
+                <v-list-item-content>
+                  <v-list-item-title>Payment Date:</v-list-item-title>
+                  <v-list-item-subtitle>{{ paymentDate }}</v-list-item-subtitle>
+                </v-list-item-content>
+              </v-list-item>
+              <v-list-item>
+                <v-list-item-content>
+                  <v-list-item-title>Payment ID:</v-list-item-title>
+                  <v-list-item-subtitle>{{ paymentId }}</v-list-item-subtitle>
+                </v-list-item-content>
+              </v-list-item>
+            </v-list>
+            <v-btn color="primary" text @click="downloadReceipt" class="mt-4">
+              <v-icon left>mdi-download</v-icon>
+              Download Receipt
+            </v-btn>
+          </div>
+        </v-card-text>
+
+        <v-card-actions v-if="paymentState === 'success'">
+          <v-spacer></v-spacer>
+          <v-btn color="primary" text @click="redirectToApp">
+            Redirect Now ({{ countdown }}s)
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </v-app>
 </template>
 
 <script>
 import jsPDF from "jspdf";
+
 export default {
   data() {
     return {
@@ -115,7 +134,7 @@ export default {
       countdown: 5,
       interval: null,
       amount: 0,
-      paidAmount: 0, 
+      paidAmount: 0,
       paymentDate: "",
       paymentId: "",
       rules: {
@@ -134,15 +153,17 @@ export default {
   },
   methods: {
     processPayment() {
-      this.dialog = true;
-      this.paymentState = "processing";
-      setTimeout(() => {
-        this.paymentState = "success";
-        this.paidAmount = this.amount;
-        this.paymentDate = new Date().toLocaleString();
-        this.paymentId = Math.random().toString(36).slice(2, 12).toUpperCase();
-        this.startCountdown();
-      }, 3000);
+      if (this.$refs.form.validate()) {
+        this.dialog = true;
+        this.paymentState = "processing";
+        setTimeout(() => {
+          this.paymentState = "success";
+          this.paidAmount = this.amount;
+          this.paymentDate = new Date().toLocaleString();
+          this.paymentId = Math.random().toString(36).slice(2, 12).toUpperCase();
+          this.startCountdown();
+        }, 3000);
+      }
     },
     startCountdown() {
       this.interval = setInterval(() => {
@@ -159,52 +180,67 @@ export default {
       this.$router.push("/");
     },
     maskCardNumber(cardNumber) {
-    if (cardNumber.length === 16) {
-      return `${cardNumber.slice(0, 4)} ******** ${cardNumber.slice(-4)}`;
+      if (cardNumber.length === 16) {
+        return `${cardNumber.slice(0, 4)} ******** ${cardNumber.slice(-4)}`;
+      }
+      return "Invalid Card Number";
+    },
+    downloadReceipt() {
+      if (!this.paidAmount || !this.paymentDate || !this.paymentId) {
+        console.error("Receipt data is missing!");
+        return;
+      }
+
+      try {
+        const doc = new jsPDF();
+        let y = 20;
+
+        doc.setFontSize(16);
+        doc.text("Payment Receipt", 20, y);
+        y += 10;
+
+        doc.setFontSize(12);
+        doc.text(`Cardholder Name: ${this.cardholderName}`, 20, y);
+        y += 10;
+        doc.text(`Card Number: ${this.maskCardNumber(this.cardNumber)}`, 20, y);
+        y += 10;
+        doc.text(`Amount Paid: ${this.paidAmount} BDT`, 20, y);
+        y += 10;
+        doc.text(`Payment Date: ${this.paymentDate}`, 20, y);
+        y += 10;
+        doc.text(`Payment ID: ${this.paymentId}`, 20, y);
+
+        doc.save(`Payment_Receipt_${this.paymentId}.pdf`);
+      } catch (error) {
+        console.error("Error generating receipt PDF:", error);
+      }
     }
-    return "Invalid Card Number";
-  },
-  downloadReceipt() {
-    if (!this.paidAmount || !this.paymentDate || !this.paymentId) {
-      console.error("Receipt data is missing!");
-      return;
-    }
-
-    try {
-      const doc = new jsPDF();
-      let y = 20;
-
-      doc.setFontSize(16);
-      doc.text("Payment Receipt", 20, y);
-      y += 10;
-
-      doc.setFontSize(12);
-      doc.text(`Cardholder Name: ${this.cardholderName}`, 20, y);
-      y += 10; 
-      doc.text(`Card Number: ${this.maskCardNumber(this.cardNumber)}`, 20, y);
-      y += 10;
-      doc.text(`Amount Paid: ${this.paidAmount} BDT`, 20, y);
-      y += 10;
-      doc.text(`Payment Date: ${this.paymentDate}`, 20, y);
-      y += 10;
-      doc.text(`Payment ID: ${this.paymentId}`, 20, y);
-
-      doc.save(`Payment_Receipt_${this.paymentId}.pdf`);
-    } catch (error) {
-      console.error("Error generating receipt PDF:", error);
-    }
-  }
-
-
   },
 };
 </script>
 
-<style>
-.v-btn {
-  margin-top: 10px;
+<style scoped>
+/* .gradient-background {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+} */
+
+.payment-card {
+  border-radius: 16px;
+  overflow: hidden;
 }
-.text-center {
-  text-align: center;
+
+.v-card__title {
+  background-color: #f3f4f6;
+  color: #1e293b;
+}
+
+.v-btn {
+  text-transform: none;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+.v-dialog {
+  border-radius: 16px;
 }
 </style>

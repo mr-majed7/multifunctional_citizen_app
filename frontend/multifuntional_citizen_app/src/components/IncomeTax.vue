@@ -1,120 +1,185 @@
 <template>
-    <v-app id="income-tax-app">
-      <v-container>
-        <v-card class="pa-5">
-          <v-card-title>
-            <h1>Income Tax Filing</h1>
-          </v-card-title>
-  
-          <v-card-text>
-            <section v-if="step === 'form'">
-              <h2>Complete Your Income Tax Form</h2>
-              <v-form @submit.prevent="submitForm">
+  <v-app id="income-tax-app">
+    <v-container fluid class="fill-height">
+      <v-row align="center" justify="center">
+        <v-col cols="12" sm="10" md="8" lg="6">
+          <v-card class="tax-card" elevation="10">
+            <v-card-title class="text-h4 font-weight-bold text-center py-4 primary white--text">
+              Income Tax Filing
+            </v-card-title>
+
+            <v-card-text class="pa-6">
+              <v-form @submit.prevent="submitForm" ref="form" v-model="valid" v-if="!showReview">
                 <v-text-field 
-                  label="Name" 
-                  v-model="formData.name" 
+                  v-model="formData.name"
+                  label="Name"
+                  :rules="[v => !!v || 'Name is required']"
                   required
-                />
-  
+                  outlined
+                  dense
+                ></v-text-field>
+
                 <v-text-field 
-                  label="Time Period (e.g., FY 2023-24)" 
-                  v-model="formData.timePeriod" 
+                  v-model="formData.timePeriod"
+                  label="Time Period (e.g., FY 2023-24)"
+                  :rules="[v => !!v || 'Time Period is required']"
                   required
-                />
-  
+                  outlined
+                  dense
+                ></v-text-field>
+
                 <v-text-field 
-                  label="Income Source" 
-                  v-model="formData.incomeSource" 
+                  v-model="formData.incomeSource"
+                  label="Income Source"
+                  :rules="[v => !!v || 'Income Source is required']"
                   required
-                />
-  
+                  outlined
+                  dense
+                ></v-text-field>
+
                 <v-text-field 
-                  label="Total Income" 
-                  type="number" 
-                  v-model="formData.totalIncome" 
+                  v-model="formData.totalIncome"
+                  label="Total Income"
+                  type="number"
+                  :rules="[
+                    v => !!v || 'Total Income is required',
+                    v => v > 0 || 'Total Income must be greater than 0'
+                  ]"
                   required
-                />
-  
+                  outlined
+                  dense
+                  suffix="bdt"
+                ></v-text-field>
+
                 <v-text-field 
-                  label="Total Tax Amount" 
-                  type="number" 
-                  v-model="formData.taxAmount" 
+                  v-model="formData.taxAmount"
+                  label="Total Tax Amount"
+                  type="number"
+                  :rules="[
+                    v => !!v || 'Tax Amount is required',
+                    v => v >= 0 || 'Tax Amount must be 0 or greater'
+                  ]"
                   required
-                />
-  
-                <v-btn color="primary" type="submit">Submit</v-btn>
+                  outlined
+                  dense
+                  suffix="bdt"
+                ></v-text-field>
+
+                <v-btn
+                  color="primary"
+                  type="submit"
+                  :disabled="!valid"
+                  class="mt-4"
+                  elevation="2"
+                >
+                  <v-icon left>mdi-check</v-icon>
+                  Submit
+                </v-btn>
               </v-form>
-            </section>
-  
-            <section v-else-if="step === 'review'">
-              <h2>Review Your Details</h2>
-              <v-list>
-                <v-list-item>
-                  <v-list-item-content>
-                    <v-list-item-title><strong>Name:</strong> {{ formData.name }}</v-list-item-title>
-                  </v-list-item-content>
-                </v-list-item>
-                <v-list-item>
-                  <v-list-item-content>
-                    <v-list-item-title><strong>Time Period:</strong> {{ formData.timePeriod }}</v-list-item-title>
-                  </v-list-item-content>
-                </v-list-item>
-                <v-list-item>
-                  <v-list-item-content>
-                    <v-list-item-title><strong>Income Source:</strong> {{ formData.incomeSource }}</v-list-item-title>
-                  </v-list-item-content>
-                </v-list-item>
-                <v-list-item>
-                  <v-list-item-content>
-                    <v-list-item-title><strong>Total Income:</strong> {{ formData.totalIncome }}</v-list-item-title>
-                  </v-list-item-content>
-                </v-list-item>
-                <v-list-item>
-                  <v-list-item-content>
-                    <v-list-item-title><strong>Total Tax Amount:</strong> {{ formData.taxAmount }}</v-list-item-title>
-                  </v-list-item-content>
-                </v-list-item>
-              </v-list>
-              <v-btn color="primary" @click="proceedToPayment">Proceed to Payment</v-btn>
-            </section>
-          </v-card-text>
-        </v-card>
-      </v-container>
-    </v-app>
-  </template>
-  
-  <script>
-  import ProcessPayment from "./ProcessPayment.vue";
-  
-  export default {
-    name: "IncomeTaxApp",
-    components: { ProcessPayment },
-    data() {
-      return {
-        step: "form",
-        formData: {
-          name: "",
-          timePeriod: "",
-          incomeSource: "",
-          totalIncome: 0,
-          taxAmount: 0,
-        },
-      };
-    },
-    methods: {
-      submitForm() {
-        this.step = "review";
+
+              <div v-else>
+                <h2 class="text-h5 mb-4">Review Your Details</h2>
+                <v-list>
+                  <v-list-item v-for="(value, key) in formData" :key="key">
+                    <v-list-item-content>
+                      <v-list-item-title class="font-weight-medium">{{ formatLabel(key) }}:</v-list-item-title>
+                      <v-list-item-subtitle class="text-h6">
+                        {{ formatValue(key, value) }}
+                      </v-list-item-subtitle>
+                    </v-list-item-content>
+                  </v-list-item>
+                </v-list>
+                <v-btn
+                  color="primary"
+                  @click="proceedToPayment"
+                  class="mt-4"
+                  elevation="2"
+                >
+                  <v-icon left>mdi-cash-multiple</v-icon>
+                  Proceed to Payment
+                </v-btn>
+                <v-btn
+                  color="secondary"
+                  @click="editForm"
+                  class="mt-4 ml-2"
+                  elevation="2"
+                >
+                  <v-icon left>mdi-pencil</v-icon>
+                  Edit Form
+                </v-btn>
+              </div>
+            </v-card-text>
+          </v-card>
+        </v-col>
+      </v-row>
+    </v-container>
+  </v-app>
+</template>
+
+<script>
+export default {
+  name: "IncomeTaxApp",
+  data() {
+    return {
+      valid: false,
+      showReview: false,
+      formData: {
+        name: "",
+        timePeriod: "",
+        incomeSource: "",
+        totalIncome: 0,
+        taxAmount: 0,
       },
-      proceedToPayment() {
-        this.$router.push(`/payment?&amount=${this.formData.taxAmount}`);
-      },
+    };
+  },
+  methods: {
+    submitForm() {
+      if (this.$refs.form.validate()) {
+        this.showReview = true;
+      }
     },
-  };
-  </script>
-  
-  <style>
-  #income-tax-app {
-    margin: 20px;
-  }
-  </style>
-  
+    proceedToPayment() {
+      this.$router.push(`/payment?amount=${this.formData.taxAmount}`);
+    },
+    editForm() {
+      this.showReview = false;
+    },
+    formatLabel(key) {
+      return key.split(/(?=[A-Z])/).join(" ").replace(/\b\w/g, l => l.toUpperCase());
+    },
+    formatValue(key, value) {
+      if (key === 'totalIncome' || key === 'taxAmount') {
+        return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(value);
+      }
+      return value;
+    }
+  },
+};
+</script>
+
+<style scoped>
+.tax-card {
+  border-radius: 16px;
+  overflow: hidden;
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+.tax-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 20px rgba(0, 0, 0, 0.2);
+}
+
+.v-list-item {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+}
+
+.v-list-item:last-child {
+  border-bottom: none;
+}
+
+.v-btn {
+  text-transform: none;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+</style>
