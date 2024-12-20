@@ -115,6 +115,16 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
+
+    <v-dialog v-model="redirectLoading" persistent max-width="300">
+    <v-card>
+      <v-card-text class="text-center pa-4">
+        <v-progress-circular indeterminate color="primary" size="64" class="mb-4"></v-progress-circular>
+        <p class="text-h6">Redirecting...</p>
+        <p>Please wait while we redirect you to your app</p>
+      </v-card-text>
+    </v-card>
+  </v-dialog>
   </v-app>
 </template>
 
@@ -125,6 +135,8 @@ import jsPDF from "jspdf";
 export default {
   data() {
     return {
+      dialog: false,
+      redirectLoading: false,
       cardholderName: "",
       cardNumber: "",
       expiryDate: "",
@@ -195,8 +207,11 @@ export default {
       }, 1000);
     },
     redirect() {
+      this.redirectLoading = true;
       this.dialog = false;
-      this.$router.push(`${this.$route.query.redirectRoute}`);
+      setTimeout(() => {
+        this.$router.push(`${this.$route.query.redirectRoute}`);
+      }, 3000);
     },
     maskCardNumber(cardNumber) {
       if (cardNumber.length === 16) {
