@@ -48,7 +48,7 @@
                   required
                   outlined
                   dense
-                  suffix="bdt"
+                  prefix="BDT"
                 ></v-text-field>
 
                 <v-text-field 
@@ -62,7 +62,7 @@
                   required
                   outlined
                   dense
-                  suffix="bdt"
+                  prefix="BDT"
                 ></v-text-field>
 
                 <v-btn
@@ -149,7 +149,7 @@ export default {
     },
     formatValue(key, value) {
       if (key === 'totalIncome' || key === 'taxAmount') {
-        return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(value);
+        return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'BDT' }).format(value);
       }
       return value;
     }

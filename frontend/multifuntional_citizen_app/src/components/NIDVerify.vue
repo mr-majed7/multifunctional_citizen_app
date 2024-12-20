@@ -15,7 +15,7 @@
                   accept="image/*"
                   outlined
                   dense
-                  prepend-icon="mdi-camera"
+                  prepend-icon="mdi-file-image"
                   @change="handleFileUpload"
                   :clearable="true"
                   @click:clear="resetImagePreview"
