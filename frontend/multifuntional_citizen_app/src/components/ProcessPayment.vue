@@ -109,7 +109,7 @@
 
         <v-card-actions v-if="paymentState === 'success'">
           <v-spacer></v-spacer>
-          <v-btn color="primary" text @click="redirectToApp">
+          <v-btn color="primary" text @click="redirect">
             Redirect Now ({{ countdown }}s)
           </v-btn>
         </v-card-actions>
@@ -119,6 +119,7 @@
 </template>
 
 <script>
+import axios from "axios";
 import jsPDF from "jspdf";
 
 export default {
@@ -150,19 +151,37 @@ export default {
   created() {
     const queryAmount = this.$route.query.amount;
     this.amount = queryAmount ? parseFloat(queryAmount) : 0;
+    this.updateStatusUrl = this.$route.query.updateStatusEndpoint;
+    console.log(this.updateStatusUrl);
   },
   methods: {
+    async updateStatus(url){
+      try {
+        console.log(url);
+        const response = await axios.put(`http://localhost:5000/${url}`);
+        if (!response.ok) {
+          throw new Error("Failed to update status.");
+        }else{
+          return true;
+        }
+      } catch (error) {
+        console.error("Error updating status:", error);
+      }
+    },
     processPayment() {
       if (this.$refs.form.validate()) {
-        this.dialog = true;
-        this.paymentState = "processing";
-        setTimeout(() => {
-          this.paymentState = "success";
-          this.paidAmount = this.amount;
-          this.paymentDate = new Date().toLocaleString();
-          this.paymentId = Math.random().toString(36).slice(2, 12).toUpperCase();
-          this.startCountdown();
-        }, 3000);
+        if (this.updateStatusUrl != undefined){
+          this.updateStatus(this.updateStatusUrl);
+        }
+          this.dialog = true;
+          this.paymentState = "processing";
+          setTimeout(() => {
+            this.paymentState = "success";
+            this.paidAmount = this.amount;
+            this.paymentDate = new Date().toLocaleString();
+            this.paymentId = Math.random().toString(36).slice(2, 12).toUpperCase();
+            this.startCountdown();
+          }, 3000);
       }
     },
     startCountdown() {
@@ -171,13 +190,13 @@ export default {
           this.countdown--;
         } else {
           clearInterval(this.interval);
-          this.redirectToApp();
+          this.redirect();
         }
       }, 1000);
     },
-    redirectToApp() {
+    redirect() {
       this.dialog = false;
-      this.$router.push("/");
+      this.$router.push(`${this.$route.query.redirectRoute}`);
     },
     maskCardNumber(cardNumber) {
       if (cardNumber.length === 16) {

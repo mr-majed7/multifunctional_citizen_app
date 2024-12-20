@@ -117,7 +117,7 @@ export default {
   },
     redirectToPayment(index) {
       const bill = this.bills[index];
-      this.$router.push(`/payment?amount=${bill.amount}`);
+      this.$router.push(`/payment?amount=${bill.amount}&updateStatusEndpoint=/update_bill_status/${bill.bill_id}&redirectRoute=/utbill`);
     },
     getBillIcon(type) {
       const icons = {
