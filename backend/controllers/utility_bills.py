@@ -17,7 +17,7 @@ def fetch_bills(nid_number):
         connection.close()
 
 
-def update_bill_status(bill_id, status):
+def update_bill_status(bill_id,status):
     try:
         connection = get_db_connection()
         with connection.cursor() as cursor:

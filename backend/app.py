@@ -20,9 +20,9 @@ def get_bills(nid_no):
 
     return jsonify(bills), 200
 
-@app.route('/update_bill_status/<bill_id>', methods=['POST'])
+@app.route('/update_bill_status/<bill_id>', methods=['PUT'])
 def update_status(bill_id):
-    message, status_code = update_bill_status(bill_id, status)
+    message, status_code = update_bill_status(bill_id, 1)
 
     return jsonify({"message": message}), status_code
 
