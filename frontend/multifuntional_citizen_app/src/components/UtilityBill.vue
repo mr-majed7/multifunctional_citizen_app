@@ -9,7 +9,12 @@
             </v-card-title>
 
             <v-card-text class="pa-6">
-              <v-expansion-panels accordion hover>
+              <div v-if="loading" class="text-center py-6">
+                <v-progress-circular indeterminate color="primary" size="64"></v-progress-circular>
+                <div class="mt-4">Fetching your bills...</div>
+              </div>
+
+              <v-expansion-panels v-else accordion hover>
                 <v-expansion-panel
                   v-for="(bill, index) in bills"
                   :key="index"
@@ -76,62 +81,76 @@
 export default {
   data() {
     return {
-      bills: [
-        {
-          type: "gas",
-          amount: 1200,
-          dueDate: "2024-12-31",
-          status: false,
-        },
-        {
-          type: "electricity",
-          amount: 2500,
-          dueDate: "2024-12-20",
-          status: false,
-        },
-        {
-          type: "water",
-          amount: 500,
-          dueDate: "2024-12-25",
-          status: true,
-        },
-      ],
+      bills: [],
+      loading: true,
     };
   },
   methods: {
+    async fetchBills() {
+    const nidNumber = localStorage.getItem("nid_number");
+    if (!nidNumber) {
+      alert("NID number is missing!");
+      this.loading = false;
+      return;
+    }
+
+    try {
+      const response = await fetch(`http://localhost:5000/get_bills/${nidNumber}`);
+      if (!response.ok) {
+        throw new Error("Failed to fetch bills.");
+      }
+      const data = await response.json();
+
+      this.bills = data.map(bill => ({
+        ...bill,
+        dueDate: new Date(bill.due_date).toISOString(),
+        amount: parseFloat(bill.amount),
+        status: Boolean(bill.status)
+      }));
+      console.log("Fetched bills:", this.bills);
+    } catch (error) {
+      console.error("Error fetching bills:", error);
+      alert("Failed to fetch bills. Please try again later.");
+    } finally {
+      this.loading = false;
+    }
+  },
     redirectToPayment(index) {
       const bill = this.bills[index];
       this.$router.push(`/payment?amount=${bill.amount}`);
     },
     getBillIcon(type) {
       const icons = {
-        gas: 'mdi-fire',
-        electricity: 'mdi-lightning-bolt',
-        water: 'mdi-water'
+        gas: "mdi-fire",
+        electricity: "mdi-lightning-bolt",
+        water: "mdi-water",
       };
-      return icons[type] || 'mdi-file-document-outline';
+      return icons[type] || "mdi-file-document-outline";
     },
     getBillColor(type) {
       const colors = {
-        gas: 'orange',
-        electricity: 'yellow darken-2',
-        water: 'blue'
+        gas: "orange",
+        electricity: "yellow darken-2",
+        water: "blue",
       };
-      return colors[type] || 'grey';
+      return colors[type] || "grey";
     },
     formatCurrency(amount) {
-      return new Intl.NumberFormat('en-BD', { style: 'currency', currency: 'BDT' }).format(amount);
+      return new Intl.NumberFormat("en-BD", { style: "currency", currency: "BDT" }).format(amount);
     },
     formatDate(dateString) {
-      return new Date(dateString).toLocaleDateString('en-BD', { year: 'numeric', month: 'long', day: 'numeric' });
-    }
+      return new Date(dateString).toLocaleDateString("en-BD", { year: "numeric", month: "long", day: "numeric" });
+    },
+  },
+  mounted() {
+    this.fetchBills();
   },
 };
 </script>
 
 <style scoped>
 .bill-card {
-  background: linear-gradient(135deg, #12100e 0%, #2b4162 100%);;
+  background: linear-gradient(135deg, #12100e 0%, #2b4162 100%);
   border-radius: 16px;
   overflow: hidden;
   transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
