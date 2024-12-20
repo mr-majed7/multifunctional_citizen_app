@@ -192,10 +192,25 @@ export default {
             this.paidAmount = this.amount;
             this.paymentDate = new Date().toLocaleString();
             this.paymentId = Math.random().toString(36).slice(2, 12).toUpperCase();
+            this.add_payment();
             this.startCountdown();
           }, 3000);
       }
     },
+    async add_payment(){
+      try {
+      const response = await axios.post("http://localhost:5000/add_payment", {
+        payment_id: this.paymentId,
+        type: this.$route.query.type,
+        amount: this.amount,
+        cardholders_name: this.cardholderName,
+        card_number: this.cardNumber,
+        date: new Date().toISOString().split("T")[0],
+        time: new Date().toISOString().split("T")[1].split(".")[0],
+      });
+    } catch (error) {
+      console.error("Error adding payment:", error);
+    }},
     startCountdown() {
       this.interval = setInterval(() => {
         if (this.countdown > 0) {

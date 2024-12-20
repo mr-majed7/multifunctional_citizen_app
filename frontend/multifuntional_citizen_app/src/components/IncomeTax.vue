@@ -149,7 +149,7 @@ export default {
       }
     },
     proceedToPayment() {
-      this.$router.push(`/payment?amount=${this.formData.taxAmount}&redirectRoute=/`);
+      this.$router.push(`/payment?amount=${this.formData.taxAmount}&redirectRoute=/&type=income_tax`);
     },
     editForm() {
       this.showReview = false;
