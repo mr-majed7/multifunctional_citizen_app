@@ -20,6 +20,15 @@
                 ></v-text-field>
 
                 <v-text-field 
+                  v-model="formData.nidNumber"
+                  label="NID Number"
+                  :rules="[v => !!v || 'NID Number is required']"
+                  required
+                  outlined
+                  dense
+                  ></v-text-field>
+
+                <v-text-field 
                   v-model="formData.timePeriod"
                   label="Time Period (e.g., FY 2023-24)"
                   :rules="[v => !!v || 'Time Period is required']"
@@ -125,6 +134,7 @@ export default {
       showReview: false,
       formData: {
         name: "",
+        nidNumber: "",
         timePeriod: "",
         incomeSource: "",
         totalIncome: 0,
@@ -139,7 +149,7 @@ export default {
       }
     },
     proceedToPayment() {
-      this.$router.push(`/payment?amount=${this.formData.taxAmount}`);
+      this.$router.push(`/payment?amount=${this.formData.taxAmount}&redirectRoute=/`);
     },
     editForm() {
       this.showReview = false;
