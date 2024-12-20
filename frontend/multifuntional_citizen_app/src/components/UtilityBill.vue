@@ -5,13 +5,29 @@
         <v-col cols="12" sm="10" md="8" lg="6">
           <v-card class="bill-card" elevation="10">
             <v-card-title class="text-h4 font-weight-bold text-center py-4 primary white--text">
-              Your Bills
+              Your Utility Bills
             </v-card-title>
 
             <v-card-text class="pa-6">
-              <div v-if="loading" class="text-center py-6">
-                <v-progress-circular indeterminate color="primary" size="64"></v-progress-circular>
-                <div class="mt-4">Fetching your bills...</div>
+              <div v-if="loading" class="loading-container">
+                <v-card class="loading-card" elevation="4">
+                  <v-card-text class="text-center pa-4">
+                    <v-progress-circular
+                      indeterminate
+                      color="primary"
+                      size="64"
+                      width="4"
+                      class="mb-4 pulse-animation"
+                    ></v-progress-circular>
+                    <h2 class="text-h6 font-weight-bold mb-2">Fetching your bills</h2>
+                    <p class="text-body-2 text-medium-emphasis">Please wait while we gather all your bills</p>
+                    <v-skeleton-loader
+                      class="mt-4"
+                      type="list-item-two-line, list-item-two-line"
+                      :loading="true"
+                    ></v-skeleton-loader>
+                  </v-card-text>
+                </v-card>
               </div>
 
               <v-expansion-panels v-else accordion hover>
@@ -90,7 +106,6 @@ export default {
     const nidNumber = localStorage.getItem("nid_number");
     if (!nidNumber) {
       alert("NID number is missing!");
-      this.loading = false;
       return;
     }
 
@@ -112,6 +127,7 @@ export default {
       console.error("Error fetching bills:", error);
       alert("Failed to fetch bills. Please try again later.");
     } finally {
+      await new Promise(resolve => setTimeout(resolve, 1500));
       this.loading = false;
     }
   },
@@ -188,4 +204,39 @@ export default {
   font-weight: 600;
   letter-spacing: 0.5px;
 }
+
+loading-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 200px;
+}
+
+.loading-card {
+  width: 100%;
+  max-width: 500px; 
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.pulse-animation {
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(0.95);
+    opacity: 0.7;
+  }
+  50% {
+    transform: scale(1.05);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(0.95);
+    opacity: 0.7;
+  }
+}
+
+
 </style>
