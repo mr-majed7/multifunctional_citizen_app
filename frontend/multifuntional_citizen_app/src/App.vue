@@ -3,19 +3,27 @@
     <v-main>
       <v-container>
         <router-view></router-view>
-        <HelloWorld></HelloWorld>
       </v-container>
     </v-main>
   </v-app>
 </template>
 
 <script>
+export default {};
+</script>
 
-import HelloWorld from './components/HelloWorld.vue';
-export default {
-  components: {
-    HelloWorld
-  }
+<style>
+body {
+  margin: 0;
+  height: 100vh;
+  background: linear-gradient(to bottom, #191818, #434343)
 }
 
-</script>
+#app {
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+</style>
