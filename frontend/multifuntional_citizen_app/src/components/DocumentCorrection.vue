@@ -144,10 +144,8 @@ export default {
             const isValidFormat = /^\d{2}-\d{2}-\d{4}$/.test(v);
             if (!isValidFormat) return 'Enter a valid date in DD-MM-YYYY format';
 
-            // Parse the date components
             const [day, month, year] = v.split('-').map(Number);
 
-            // Check if the date is logical
             const date = new Date(`${year}-${month}-${day}`);
             return (
                 date.getFullYear() === year &&

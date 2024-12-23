@@ -38,16 +38,15 @@
                 >
                   <v-expansion-panel-header class="title">
                     <v-row no-gutters align="center">
-                      <v-col cols="2">
+                      <v-col cols="auto" class="mr-2">
                         <v-icon :color="getBillColor(bill.type)" size="36">{{ getBillIcon(bill.type) }}</v-icon>
                       </v-col>
-                      <v-col>
+                      <v-col class="d-flex align-center">
                         {{ bill.type.toUpperCase() }} Bill
                       </v-col>
                       <v-col cols="auto">
                         <v-chip
                           :color="bill.status ? 'success' : 'warning'"
-                          text-color="white"
                           small
                         >
                           {{ bill.status ? 'Paid' : 'Pending' }}

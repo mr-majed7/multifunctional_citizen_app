@@ -151,12 +151,12 @@ export default {
       paymentDate: "",
       paymentId: "",
       rules: {
-        required: (value) => !!value || "Field is required",
-        cardNumber: (value) =>
-          /^[0-9]{16}$/.test(value) || "Invalid card number",
-        expiryDate: (value) =>
-          /^(0[1-9]|1[0-2])\/\d{2}$/.test(value) || "Invalid expiry date",
-        cvv: (value) => /^[0-9]{3}$/.test(value) || "Invalid CVV",
+        required: (v) => !!v || "Field is required",
+        cardNumber: (v) =>
+          /^[0-9]{16}$/.test(v) || "Invalid card number",
+        expiryDate: (v) =>
+          /^(0[1-9]|1[0-2])\/\d{2}$/.test(v) || "Invalid expiry date",
+        cvv: (v) => /^[0-9]{3}$/.test(v) || "Invalid CVV",
       },
     };
   },
