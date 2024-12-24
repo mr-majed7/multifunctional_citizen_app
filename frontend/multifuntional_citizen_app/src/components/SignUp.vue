@@ -90,53 +90,50 @@
   <script>
   export default {
     data: () => ({
-      countries: ['Afghanistan', 'Albania', 'Algeria', 'Bangladesh', 'United States', 'India', 'Canada'], 
-      name: null,
-      address: null,
-      city: null,
-      state: null,
-      zip: null,
-      country: null,
-      phone: null,
-      religion: null,
-      gender: null,
-      email: null,
+      countries: ['Afghanistan', 'Albania', 'Algeria', 'Bangladesh', 'United States', 'India', 'Canada'],
+      name: '',
+      address: '',
+      city: '',
+      country: '',
+      phone: '',
+      religion: '',
+      gender: '',
+      email: '',
+      password: '',
     }),
-  
-    computed: {
-      form() {
-        return {
-          name: this.name,
-          address: this.address,
-          city: this.city,
-          state: this.state,
-          zip: this.zip,
-          country: this.country,
-          phone: this.phone,
-          religion: this.religion,
-          gender: this.gender,
-          email: this.email,
-        };
-      },
-    },
   
     methods: {
       goToSignin() {
         this.$router.push({ name: 'signin' });
       },
-      submit() {
-        let isValid = true;
-        Object.keys(this.form).forEach((key) => {
-          if (!this.form[key]) {
-            isValid = false;
+      async submit() {
+        const form = {
+          name: this.name,
+          address: this.address,
+          city: this.city,
+          country: this.country,
+          phone: this.phone,
+          religion: this.religion,
+          gender: this.gender,
+          email: this.email,
+          password: this.password,
+        };
+        try {
+          const response = await fetch('http://localhost:5000/signup', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(form),
+          });
+          const data = await response.json();
+          if (response.status === 201) {
+            alert('Sign-up successful!');
+            this.goToSignin();
+          } else {
+            alert(data.message);
           }
-        });
-  
-        if (isValid) {
-          alert('Form submitted successfully!'); 
-          this.goToSignin(); 
-        } else {
-          alert('Please fill in all required fields!');
+        } catch (error) {
+          console.error(error);
+          alert('An error occurred during sign-up.');
         }
       },
     },
