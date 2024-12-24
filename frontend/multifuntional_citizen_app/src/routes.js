@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from "vue-router";
 import Signin from '@/components/Signin.vue';
 import SignUp from '@/components/SignUp.vue'; 
 import HomePage from '@/components/HomePage.vue';
+import Feedback from '@/components/Feedback.vue';
 
 const routes = [
   {
