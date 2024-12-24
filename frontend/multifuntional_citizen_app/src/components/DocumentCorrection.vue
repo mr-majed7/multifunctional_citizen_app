@@ -1,6 +1,6 @@
 <template>
-    <v-container fluid class="correction-request-container">
-        <v-card class="correction-card">
+  <v-container fluid class="correction-request-container">
+    <v-card class="correction-card">
             <v-card-title class="text-h4 font-weight-bold text-center py-4 primary white--text">
             Document Correction Request
             </v-card-title>
@@ -116,9 +116,43 @@
                 </v-btn>
             </div>
             </v-card-text>
+            <v-dialog v-model="showConfirmation" max-width="500px">
+        <v-card>
+          <v-card-title class="text-h5 font-weight-bold">
+            Document Correction Request Received
+          </v-card-title>
+          <v-card-text>
+            <p class="mb-4">Your Document Correction request has been successfully submitted.</p>
+            <v-list-item two-line>
+              <v-list-item-content>
+                <v-list-item-title class="font-weight-medium">Ticket Number:</v-list-item-title>
+                <v-list-item-subtitle class="text-h6">
+                  {{ ticketNumber }}
+                  <v-btn icon small @click="copyTicketNumber" class="ml-2">
+                    <v-icon>mdi-content-copy</v-icon>
+                  </v-btn>
+                </v-list-item-subtitle>
+              </v-list-item-content>
+            </v-list-item>
+            <v-list-item two-line>
+              <v-list-item-content>
+                <v-list-item-title class="font-weight-medium">Description of Issue:</v-list-item-title>
+                <v-list-item-subtitle>{{ formData.description }}</v-list-item-subtitle>
+              </v-list-item-content>
+            </v-list-item>
+          </v-card-text>
+          <v-card-actions>
+            <v-btn color="primary" text @click="goToHome">
+              <v-icon left>mdi-home</v-icon>
+              Go to Home
+            </v-btn>
+            <v-spacer></v-spacer>
+            <v-btn color="primary" text @click="closeConfirmation">Close</v-btn>
+          </v-card-actions>
         </v-card>
-    </v-container>
-
+      </v-dialog>
+    </v-card>
+  </v-container>
 </template>
   
 <script>
@@ -141,18 +175,20 @@ export default {
       },
       nameRule: v => /^[A-Za-z\s]+$/.test(v) || 'Only letters and spaces are allowed',
       dateRule: v => {
-            const isValidFormat = /^\d{2}-\d{2}-\d{4}$/.test(v);
-            if (!isValidFormat) return 'Enter a valid date in DD-MM-YYYY format';
+        const isValidFormat = /^\d{2}-\d{2}-\d{4}$/.test(v);
+        if (!isValidFormat) return 'Enter a valid date in DD-MM-YYYY format';
 
-            const [day, month, year] = v.split('-').map(Number);
+        const [day, month, year] = v.split('-').map(Number);
 
-            const date = new Date(`${year}-${month}-${day}`);
-            return (
-                date.getFullYear() === year &&
-                date.getMonth() + 1 === month &&
-                date.getDate() === day
-            ) || 'Enter a valid date in DD-MM-YYYY format';
-            },
+        const date = new Date(`${year}-${month}-${day}`);
+        return (
+          date.getFullYear() === year &&
+          date.getMonth() + 1 === month &&
+          date.getDate() === day
+        ) || 'Enter a valid date in DD-MM-YYYY format';
+      },
+      showConfirmation: false,
+      ticketNumber: '',
     };
   },
   methods: {
@@ -167,10 +203,15 @@ export default {
         documentNumber: this.documentNumber,
         ...this.formData,
       });
-      this.step = 1;
-      this.selectedDocumentType = '';
-      this.documentNumber = '';
-      this.$vuetify.snackbar.success('Correction request submitted successfully!');
+      
+      // Generate a unique ticket number
+      this.ticketNumber = this.generateTicketNumber();
+      
+      // Show the confirmation dialog
+      this.showConfirmation = true;
+      
+      // Reset form (you may want to do this after closing the confirmation)
+      // this.resetForm();
     },
     editForm() {
       this.step = 2;
@@ -178,10 +219,41 @@ export default {
     formatLabel(key) {
       return key.split(/(?=[A-Z])/).join(" ").replace(/\b\w/g, l => l.toUpperCase());
     },
+    generateTicketNumber() {
+      // Generate a random alphanumeric string
+      const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+      let result = '';
+      for (let i = 0; i < 8; i++) {
+        result += characters.charAt(Math.floor(Math.random() * characters.length));
+      }
+      return `DCR-${result}`;
+    },
+    copyTicketNumber() {
+      navigator.clipboard.writeText(this.ticketNumber);
+    },
+    closeConfirmation() {
+      this.showConfirmation = false;
+      this.resetForm();
+    },
+    resetForm() {
+      this.step = 1;
+      this.selectedDocumentType = '';
+      this.documentNumber = '';
+      this.formData = {
+        name: '',
+        fathersName: '',
+        mothersName: '',
+        dateOfBirth: '',
+        address: '',
+        description: '',
+      };
+    },
+    goToHome() {
+      this.$router.push('/');
+    },
   },
 };
-
-  </script>
+</script>
   
   <style scoped>
   .correction-request-container {
