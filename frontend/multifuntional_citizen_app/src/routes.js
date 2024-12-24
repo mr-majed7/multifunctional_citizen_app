@@ -19,6 +19,11 @@ const routes = [
     name: 'home',
     component: HomePage, 
   },
+  {
+    path: '/feedback',
+    name: 'Feedback',
+    component: Feedback,
+  },
 ];
 
 const router = createRouter({
