@@ -1,21 +1,9 @@
 <template>
   <v-app>
-    <v-main>
-      <v-container>
-        <router-view></router-view>
-        <HelloWorld></HelloWorld>
-      </v-container>
-    </v-main>
+    <router-view />
   </v-app>
 </template>
 
 <script>
-
-import HelloWorld from './components/HelloWorld.vue';
-export default {
-  components: {
-    HelloWorld
-  }
-}
-
+export default {};
 </script>
