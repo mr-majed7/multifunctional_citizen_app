@@ -1,8 +1,9 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, send_from_directory
 from flask_cors import CORS 
 from controllers.detect_text import detect_text
 from controllers.utility_bills import fetch_bills, update_bill_status
 from controllers.payments import add_payment_details
+import os
 
 app = Flask(__name__)
 CORS(app)
