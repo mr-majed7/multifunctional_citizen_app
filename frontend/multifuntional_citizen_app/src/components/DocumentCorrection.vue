@@ -156,6 +156,8 @@
 </template>
   
 <script>
+import axios from 'axios';
+
 export default {
   name: 'DocumentCorrection',
   data() {
@@ -197,21 +199,45 @@ export default {
         this.step = 3;
       }
     },
-    submitForm() {
+    async submitForm() {
       console.log('Submitting correction request:', {
-        documentType: this.selectedDocumentType,
-        documentNumber: this.documentNumber,
+        document_type: this.selectedDocumentType,
+        document_number: this.documentNumber,
         ...this.formData,
       });
       
-      // Generate a unique ticket number
       this.ticketNumber = this.generateTicketNumber();
+      const user_id = localStorage.getItem('user_id')
       
-      // Show the confirmation dialog
+      try {
+        const response = await axios.post(
+          `http://localhost:5000/service_req/${user_id}/Document%20Correction`,
+          {
+            document_type: this.selectedDocumentType,
+            document_number: this.documentNumber,
+            form_data: this.formData,
+            ticket_no: this.ticketNumber,
+          }
+        );
+
+        if (response.status === 200) {
+          console.log('Request submitted successfully:', response.data);
+          this.$emit('success', response.data.message || 'Request submitted successfully');
+        }
+      } catch (error) {
+        if (error.response) {
+          console.error('Error response:', error.response.data);
+          alert(`Error: ${error.response.data.error || 'Unable to submit request'}`);
+        } else if (error.request) {
+          console.error('Error request:', error.request);
+          alert('Error: No response from the server. Please try again later.');
+        } else {
+          console.error('Error:', error.message);
+          alert('Error: Something went wrong. Please try again.');
+        }
+      }
+
       this.showConfirmation = true;
-      
-      // Reset form (you may want to do this after closing the confirmation)
-      // this.resetForm();
     },
     editForm() {
       this.step = 2;
@@ -220,7 +246,6 @@ export default {
       return key.split(/(?=[A-Z])/).join(" ").replace(/\b\w/g, l => l.toUpperCase());
     },
     generateTicketNumber() {
-      // Generate a random alphanumeric string
       const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
       let result = '';
       for (let i = 0; i < 8; i++) {
