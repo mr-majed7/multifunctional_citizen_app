@@ -1,21 +1,27 @@
 <template>
   <v-app>
     <v-main>
-      <v-container>
-        <router-view></router-view>
-        <HelloWorld></HelloWorld>
-      </v-container>
+      <Listfiles/>
+      <router-view />
+       <!-- <Upload/> -->
     </v-main>
   </v-app>
 </template>
 
 <script>
+import Listfiles from './components/Listfiles.vue'
+import Upload from './components/Upload.vue';
 
-import HelloWorld from './components/HelloWorld.vue';
 export default {
-  components: {
-    HelloWorld
-  }
-}
+  name: 'App',
 
+  components: {
+    Listfiles,
+    Upload
+  },
+
+  data: () => ({
+    //
+  }),
+}
 </script>
