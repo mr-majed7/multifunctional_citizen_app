@@ -74,38 +74,39 @@
       </v-container>
     </v-app>
   </template>
-
-<script>
-export default {
-  data: () => ({
-    visible: false,
-    email: '',
-    password: '',
-  }),
-  methods: {
-    handleLogin() {
-      if (this.email === 'user@example.com' && this.password === 'password123') {
-        this.$router.push('/home'); 
-      } else {
-        alert('Invalid login credentials. Please try again!');
-      }
+  
+  <script>
+  export default {
+    data: () => ({
+      visible: false,
+      email: '',
+      password: '',
+    }),
+    methods: {
+      handleLogin() {
+        if (this.email === 'user@example.com' && this.password === 'password123') {
+          this.$router.push('/home'); 
+        } else {
+          alert('Invalid login credentials. Please try again!');
+        }
+      },
     },
-  },
-};
-</script>
-
-<style scoped>
-.background-image {
-  background: url('@/assets/flag.png') no-repeat center center fixed;
-  background-size: cover;
-  height: 100vh; 
-}
-
-.fill-height {
-  height: 100vh;
-}
-
-.logo-margin {
-  margin-left: 30px; 
-}
-</style>
+  };
+  </script>
+  
+  <style scoped>
+  .background-image {
+    background: url('@/assets/flag.png') no-repeat center center fixed;
+    background-size: cover;
+    height: 100vh; 
+  }
+  
+  .fill-height {
+    height: 100vh;
+  }
+  
+  .logo-margin {
+    margin-left: 30px; 
+  }
+  </style>
+  

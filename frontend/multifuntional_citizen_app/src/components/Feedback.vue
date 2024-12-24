@@ -182,7 +182,7 @@
 }
 
 .survey-card-container {
-  margin-bottom: 24px; /
+  margin-bottom: 24px; 
 }
 
 .feedback-card {

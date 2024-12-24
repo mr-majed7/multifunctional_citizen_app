@@ -1,10 +1,6 @@
 <template>
   <v-app>
-    <v-main>
-      <v-container>
-        <router-view></router-view>
-      </v-container>
-    </v-main>
+    <router-view />
   </v-app>
 </template>
 
@@ -25,5 +21,4 @@ body {
   justify-content: center;
   align-items: center;
 }
-
 </style>

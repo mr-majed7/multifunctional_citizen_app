@@ -3,7 +3,7 @@ import Signin from '@/components/Signin.vue';
 import SignUp from '@/components/SignUp.vue'; 
 import HomePage from '@/components/HomePage.vue';
 import Feedback from '@/components/Feedback.vue';
-
+import ENominationPage from '@/components/Enomination.vue'; 
 const routes = [
   {
     path: '/',
@@ -24,6 +24,11 @@ const routes = [
     path: '/feedback',
     name: 'Feedback',
     component: Feedback,
+  },
+  {
+    path: '/e-nomination',
+    name: 'ENomination',
+    component: ENominationPage, 
   },
 ];
 
