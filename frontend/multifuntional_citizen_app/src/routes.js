@@ -1,6 +1,3 @@
-import HelloWorld from "./components/HelloWorld.vue";
-import NIDVerify from "./components/NIDVerify.vue";
-
 import { createRouter, createWebHistory } from "vue-router";
 import DocumentCorrection from "./components/DocumentCorrection.vue";
 import IncomeTax from "./components/IncomeTax.vue";
