@@ -158,7 +158,7 @@ export default  {
 
 
 .background-container {
-  background: url("D:/citizen/src/assets/background.jpg");
+  background: url("../assets/background.jpg");
   background-size: cover;
   background-repeat: no-repeat;
   background-attachment: fixed;
