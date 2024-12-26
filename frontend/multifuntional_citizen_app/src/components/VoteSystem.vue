@@ -109,7 +109,7 @@ export default {
         const response = await axios.get('http://localhost:5000/candidates');
         this.candidates = response.data; 
       } catch (error) {
-        console.error('Error fetching candidates');
+        console.error('Error fetching candidates:', error);
       }
     },
 
@@ -120,9 +120,10 @@ export default {
           username: this.username,
           candidate_id: candidateId
         });
-        alert(response.data.message); 
+        this.snackbar = true; 
       } catch (error) {
-        console.error('Error submitting vote');
+        console.error('Error submitting vote:', error);
+        alert(error.response?.data?.message || 'Error submitting vote');
       }
     },
 
@@ -195,9 +196,14 @@ export default {
   border: 2px solid #ccc;
   border-radius: 8px;
   cursor: pointer;
+  transition: transform 0.2s;
 }
 
 .candidate-logo:hover {
   border-color: #000;
+  transform: scale(1.1);
+}
+.v-snackbar {
+  font-size: 0.9rem;
 }
 </style>
