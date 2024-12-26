@@ -57,7 +57,6 @@
               @click="submitVote(candidate.id)"
             ></div>
           </div>
-          <VBtn color="primary" class="mt-4" @click="submitVote">Submit</VBtn>
         </div>
 
      
