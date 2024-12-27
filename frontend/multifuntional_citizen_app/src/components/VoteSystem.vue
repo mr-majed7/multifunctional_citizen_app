@@ -203,7 +203,5 @@ export default {
   border-color: #000;
   transform: scale(1.1);
 }
-.v-snackbar {
-  font-size: 0.9rem;
-}
+
 </style>
