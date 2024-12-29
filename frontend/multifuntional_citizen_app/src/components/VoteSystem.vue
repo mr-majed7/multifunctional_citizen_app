@@ -1,51 +1,15 @@
 <template>
   <VApp>
-    
     <header class="app-header">
       <div class="header-title">Citizen App</div>
       <nav class="header-nav">
         <VBtn flat>Home</VBtn>
         <VBtn flat>About Us</VBtn>
-        <VBtn flat @click="logout">Log Out</VBtn>
       </nav>
     </header>
 
     <VMain>
-
-      <VContainer v-if="!loggedIn" class="login-container">
-        <VCard class="login-card">
-          <VCardTitle class="text-h5">Login</VCardTitle>
-          <VCardText>
-            <VForm @submit.prevent="login">
-          
-              <VTextField
-                v-model="username"
-                label="Username"
-                required
-                outlined
-                dense
-              ></VTextField>
-
-              <VTextField
-                v-model="password"
-                label="Password"
-                type="password"
-                required
-                outlined
-                dense
-              ></VTextField>
-
-              
-              <VBtn type="submit" color="primary" block class="mt-4">
-                Login
-              </VBtn>
-            </VForm>
-          </VCardText>
-        </VCard>
-      </VContainer>
-
-     
-      <VContainer v-else>
+      <VContainer>
         <div class="voting-container">
           <h2 class="voting-title">Voting Window</h2>
           <div class="candidates-row">
@@ -59,7 +23,6 @@
           </div>
         </div>
 
-     
         <VSnackbar v-model="snackbar" color="success" top>
           Your vote has been submitted!
           <template v-slot:action>
@@ -77,33 +40,11 @@ import axios from 'axios';
 export default {
   data() {
     return {
-      username: '',
-      password: '',
-      loggedIn: false,
       snackbar: false,
       candidates: []
     };
   },
   methods: {
-  
-    async login() {
-      try {
-        const response = await axios.post('http://localhost:5000/login', {
-          username: this.username,
-          password: this.password
-        });
-        if (response.data.loggedIn) {
-          this.loggedIn = true;
-          this.getCandidates(); 
-        } else {
-          alert(response.data.message);
-        }
-      } catch (error) {
-        alert('Login failed!');
-      }
-    },
-
-    
     async getCandidates() {
       try {
         const response = await axios.get('http://localhost:5000/candidates');
@@ -112,12 +53,9 @@ export default {
         console.error('Error fetching candidates:', error);
       }
     },
-
-    
     async submitVote(candidateId) {
       try {
         const response = await axios.post('http://localhost:5000/vote', {
-          username: this.username,
           candidate_id: candidateId
         });
         this.snackbar = true; 
@@ -125,19 +63,15 @@ export default {
         console.error('Error submitting vote:', error);
         alert(error.response?.data?.message || 'Error submitting vote');
       }
-    },
-
-    logout() {
-      this.loggedIn = false;
-      this.username = '';
-      this.password = '';
     }
+  },
+  mounted() {
+    this.getCandidates();
   }
 };
 </script>
 
 <style scoped>
-
 .app-header {
   display: flex;
   justify-content: space-between;
@@ -203,5 +137,6 @@ export default {
   border-color: #000;
   transform: scale(1.1);
 }
+
 
 </style>

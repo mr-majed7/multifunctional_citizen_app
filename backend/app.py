@@ -36,10 +36,10 @@ profile = {
     "profile_photo": None,
 }
 
-users = {
-    "user1": "password1",
-    "user2": "password2"
-}
+#users = {
+ #   "user1": "password1",
+  #  "user2": "password2"
+#}
 
 candidates = [
     {"id": 1, "logoUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/dc/Dhaner_Shish.png/1200px-Dhaner_Shish.png"},
@@ -137,16 +137,16 @@ def serve_uploaded_file(filename):
     return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
 
 
-@app.route('/login', methods=['POST'])
-def login():
-    data = request.json
-    username = data.get('username')
-    password = data.get('password')
+#@app.route('/login', methods=['POST'])
+#def login():
+ #   data = request.json
+  #  username = data.get('username')
+   # password = data.get('password')
 
-    if username in users and users[username] == password:
-        return jsonify({"loggedIn": True, "message": "Login successful!"}), 200
-    else:
-        return jsonify({"loggedIn": False, "message": "Invalid credentials!"}), 401
+    #if username in users and users[username] == password:
+     #   return jsonify({"loggedIn": True, "message": "Login successful!"}), 200
+    #else:
+    #    return jsonify({"loggedIn": False, "message": "Invalid credentials!"}), 401
 
 @app.route('/candidates', methods=['GET'])
 def get_candidates():
@@ -155,14 +155,19 @@ def get_candidates():
 @app.route('/vote', methods=['POST'])
 def submit_vote():
     data = request.json
-    username = data.get('username')
+    #username = data.get('username')
     candidate_id = data.get('candidate_id')
-
-    if username not in users:
-        return jsonify({"message": "User not authenticated!"}), 401
-
-    votes[username] = candidate_id
+    client_ip = request.remote_addr  
+    if client_ip in votes:
+        return jsonify({"message": "You have already voted!"}), 400
+    votes[client_ip] = candidate_id
     return jsonify({"message": "Your vote has been submitted!"}), 200
+
+  #  if username not in users:
+   #     return jsonify({"message": "User not authenticated!"}), 401
+
+   # votes[username] = candidate_id
+    #return jsonify({"message": "Your vote has been submitted!"}), 200
 
 
 @app.route('/emergency/personal', methods=['POST'])
