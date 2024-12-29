@@ -4,11 +4,14 @@ from flask_migrate import Migrate
 from flask_cors import CORS
 import os
 import re
-
+from datetime import datetime
+from sqlalchemy.orm import relationship
+from decouple import config
 
 app = Flask(__name__)
 #CORS(app)
 CORS(app, resources={r"/*": {"origins": "*"}})
+#app.config['SQLALCHEMY_DATABASE_URI'] = config('DATABASE_URI')
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:sammy@localhost/multifunctional_citizen_app'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
@@ -75,6 +78,32 @@ with app.app_context():
             db.session.add(new_contact)
     db.session.commit()
 
+class User(db.Model):
+    __tablename__ = 'user'
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(80), unique=True, nullable=False)
+    password = db.Column(db.String(120), nullable=False)
+class Complaint(db.Model):
+    __tablename__ = 'complaint'
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    title = db.Column(db.String(150), nullable=False)
+    description = db.Column(db.Text, nullable=False)
+    status = db.Column(db.String(50), default="Pending")
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    deleted = db.Column(db.Boolean, default=False)
+    user = relationship("User", backref="complaints")
+
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "user_id": self.user_id,
+            "title": self.title,
+            "description": self.description,
+            "status": self.status,
+            "created_at": self.created_at.strftime('%Y-%m-%d %H:%M:%S')
+        }
+
 
 @app.route("/api/profile", methods=["GET"])
 def get_profile():
@@ -140,7 +169,7 @@ def submit_vote():
 def add_personal_contact():
     try:
         data = request.get_json()
-        phone_number_pattern = re.compile(r'^\d{11}$')  # Example: strict validation
+        phone_number_pattern = re.compile(r'^\d{11}$')  
         if not phone_number_pattern.match(data.get('phone_number', '')):
             return jsonify({"message": "Invalid phone number format"}), 400
         if not data.get('name') or not data.get('user_id'):
@@ -191,5 +220,70 @@ def delete_personal_contact(user_id, contact_id):
 #if __name__ == '__main__':
   #  app.run(debug=True)
 
+@app.errorhandler(Exception)
+def handle_exception(e):
+    return jsonify({"error": str(e)}), 500
+
+@app.route('/complaints', methods=['POST'])
+def create_complaint():
+    data = request.get_json()
+    if not all(key in data for key in ('user_id', 'title', 'description')):
+        return jsonify({"error": "Missing required fields"}), 400
+    try:
+        new_complaint = Complaint(
+            user_id=data['user_id'],
+            title=data['title'],
+            description=data['description']
+        )
+        db.session.add(new_complaint)
+        db.session.commit()
+        return jsonify({"message": "Complaint submitted successfully!", "complaint": new_complaint.to_dict()}), 201
+    except Exception as e:
+        return jsonify({"error": str(e)}), 400
+
+@app.route('/complaints', methods=['GET'])
+def get_complaints():
+    page = request.args.get('page', 1, type=int)
+    per_page = request.args.get('per_page', 10, type=int)
+    complaints = Complaint.query.filter_by(deleted=False).paginate(page=page, per_page=per_page, error_out=False)
+    return jsonify({
+        "total": complaints.total,
+        "pages": complaints.pages,
+        "current_page": complaints.page,
+        "complaints": [complaint.to_dict() for complaint in complaints.items]
+    }), 200
+
+    #complaints = Complaint.query.all()
+    #return jsonify([complaint.to_dict() for complaint in complaints]), 200
+
+@app.route('/complaints/<int:user_id>', methods=['GET'])
+def get_user_complaints(user_id):
+    complaints = Complaint.query.filter_by(user_id=user_id, deleted=False).all()
+    return jsonify([complaint.to_dict() for complaint in complaints]), 200
+
+@app.route('/complaints/<int:complaint_id>', methods=['DELETE'])
+def delete_complaint(complaint_id):
+    complaint = Complaint.query.get(complaint_id)
+    if not complaint or complaint.deleted:
+        return jsonify({"error": "Complaint not found"}), 404
+    try:
+        complaint.deleted = True
+        #db.session.delete(complaint)
+        db.session.commit()
+        return jsonify({"message": "Complaint deleted successfully"}), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 400
+
+
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=5000)
+
+
+
+
+
+
+
+
+
+
