@@ -30,4 +30,4 @@ const routes = createRouter({
   ],
 });
 
-export default routes;
+export default router;
