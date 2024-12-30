@@ -1,9 +1,4 @@
-from flask import Flask, request, jsonify, send_from_directory
-from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
-from flask_cors import CORS
-import os
-import re
 from datetime import datetime
 from sqlalchemy.orm import relationship
 from decouple import config
@@ -19,7 +14,7 @@ import os
 
 app = Flask(__name__)
 #CORS(app)
-CORS(app, resources={r"/*": {"origins": "*"}})
+CORS(app,"origins": "*")
 #app.config['SQLALCHEMY_DATABASE_URI'] = config('DATABASE_URI')
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:sammy@localhost/multifunctional_citizen_app'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
@@ -287,21 +282,6 @@ def delete_complaint(complaint_id):
         return jsonify({"message": "Complaint deleted successfully"}), 200
     except Exception as e:
         return jsonify({"error": str(e)}), 400
-
-
-if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0', port=5000)
-
-
-
-
-
-
-
-
-
-
-CORS(app)  
 
 @app.route("/detect-text", methods=["POST"])
 def handle_detect_text():

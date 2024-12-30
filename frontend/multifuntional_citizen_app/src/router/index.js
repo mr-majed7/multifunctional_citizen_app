@@ -9,6 +9,10 @@ import Signin from "@/components/Signin.vue";
 import SignUp from "@/components/SignUp.vue";
 import UtilityBill from "@/components/UtilityBill.vue";
 import { createRouter, createWebHistory } from "vue-router";
+import complaints from "./components/complaints.vue";
+import EmergencyCon from "./components/EmergencyCon.vue";
+import Manageprofile from "./components/Manageprofile.vue";
+import VoteSystem from "./components/VoteSystem.vue";
 
 const routes = createRouter({
   history: createWebHistory(),
@@ -27,6 +31,10 @@ const routes = createRouter({
     { path: "/home", name: "home", component: HomePage },
     { path: "/feedback", name: "Feedback", component: Feedback },
     { path: "/e-nomination", name: "ENomination", component: ENominationPage },
+    { path: "/votesystem", component: VoteSystem },
+    { path: "/manageprofile", component: Manageprofile },
+    { path: "/emergencycon", component: EmergencyCon },
+    { path: "/complaints", component: complaints },
   ],
 });
 
