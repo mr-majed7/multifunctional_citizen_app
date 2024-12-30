@@ -4,6 +4,7 @@ import pymysql
 
 load_dotenv()
 
+
 def get_db_connection():
     return pymysql.connect(
         host='localhost',
