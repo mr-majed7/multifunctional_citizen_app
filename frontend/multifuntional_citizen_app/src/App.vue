@@ -13,6 +13,8 @@
 
 
 export default {
+  name: 'App',
+
   components: {
   },
   mounted() {
@@ -20,6 +22,5 @@ export default {
     localStorage.setItem('nid_number', '1234567890123');
   }
 }
-
 </script>
 

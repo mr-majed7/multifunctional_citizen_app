@@ -1,0 +1,124 @@
+// Frontend (React + Tailwind CSS)
+// File: src/components/IncomeTaxForm.js
+import React, { useState } from 'react';
+
+const IncomeTaxForm = () => {
+    const [formData, setFormData] = useState({
+        name: '',
+        income: '',
+        documents: null,
+    });
+    const [receipt, setReceipt] = useState(null);
+
+    const handleChange = (e) => {
+        const { name, value, files } = e.target;
+        setFormData({
+            ...formData,
+            [name]: files ? files[0] : value,
+        });
+    };
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        const form = new FormData();
+        form.append('name', formData.name);
+        form.append('income', formData.income);
+        form.append('documents', formData.documents);
+
+        const response = await fetch('http://localhost:5000/api/income-tax', {
+            method: 'POST',
+            body: form,
+        });
+
+        const data = await response.json();
+        setReceipt(data.receipt);
+    };
+
+    return (
+        <div className="p-6 max-w-lg mx-auto bg-white rounded-xl shadow-md space-y-4">
+            <h1 className="text-xl font-bold">Income Tax Filing and Payment</h1>
+            <form onSubmit={handleSubmit} className="space-y-4">
+                <div>
+                    <label className="block text-sm font-medium">Name</label>
+                    <input
+                        type="text"
+                        name="name"
+                        value={formData.name}
+                        onChange={handleChange}
+                        className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm"
+                        required
+                    />
+                </div>
+                <div>
+                    <label className="block text-sm font-medium">Annual Income</label>
+                    <input
+                        type="number"
+                        name="income"
+                        value={formData.income}
+                        onChange={handleChange}
+                        className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm"
+                        required
+                    />
+                </div>
+                <div>
+                    <label className="block text-sm font-medium">Upload Documents</label>
+                    <input
+                        type="file"
+                        name="documents"
+                        onChange={handleChange}
+                        className="mt-1 block w-full"
+                        required
+                    />
+                </div>
+                <button
+                    type="submit"
+                    className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+                >
+                    Submit
+                </button>
+            </form>
+            {receipt && (
+                <div className="mt-4 p-4 bg-green-100 text-green-800 rounded">
+                    <h2 className="font-bold">Receipt</h2>
+                    <p>{receipt}</p>
+                </div>
+            )}
+        </div>
+    );
+};
+
+export default IncomeTaxForm;
+
+// Backend (Node.js + Express + Multer)
+// File: server.js
+const express = require('express');
+const multer = require('multer');
+const cors = require('cors');
+const app = express();
+const PORT = 5000;
+
+app.use(cors());
+const upload = multer({ dest: 'uploads/' });
+
+app.post('/api/income-tax', upload.single('documents'), (req, res) => {
+    const { name, income } = req.body;
+    const document = req.file;
+
+    if (!name || !income || !document) {
+        return res.status(400).json({ message: 'All fields are required.' });
+    }
+
+    // Simulate tax payment processing
+    const receipt = `Thank you, ${name}. Your income tax of $${income} has been filed successfully. Receipt ID: ${Math.random().toString(36).substr(2, 9)}`;
+
+    return res.json({ receipt });
+});
+
+app.listen(PORT, () => {
+    console.log(`Server running on http://localhost:${PORT}`);
+});
+
+
+
+
+
