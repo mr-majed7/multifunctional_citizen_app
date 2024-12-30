@@ -3,7 +3,8 @@ import Signin from '@/components/Signin.vue';
 import SignUp from '@/components/SignUp.vue'; 
 import HomePage from '@/components/HomePage.vue';
 import Feedback from '@/components/Feedback.vue';
-import ENominationPage from '@/components/Enomination.vue'; 
+import ENominationPage from '@/components/Enomination.vue';  
+
 const routes = [
   {
     path: '/',
@@ -34,7 +35,7 @@ const routes = [
 
 const router = createRouter({
   history: createWebHistory(),
-  routes: [],
+  routes ,
 });
 
-export default routes;
+export default router;

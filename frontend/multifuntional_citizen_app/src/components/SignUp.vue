@@ -30,15 +30,24 @@
                   placeholder="El Paso"
                   required
                 ></v-text-field>
-                <v-autocomplete
-                  ref="country"
-                  v-model="country"
-                  :items="countries"
-                  :rules="[() => !!country || 'This field is required']"
-                  label="Country"
-                  placeholder="Select..."
+                <v-text-field
+                  ref="nid"
+                  v-model="nid"
+                  :rules="[() => !!nid || 'This field is required', value => value.length === 10 || 'NID must be exactly 10 digits']"
+                  label="National ID Number"
+                  placeholder="1234567890"
+                  type="text"
+                  maxlength="10"
                   required
-                ></v-autocomplete>
+                ></v-text-field>
+                <v-text-field
+                  ref="dob"
+                  v-model="dob"
+                  :rules="[() => !!dob || 'This field is required']"
+                  label="Date of Birth"
+                  type="date"
+                  required
+                ></v-text-field>
                 <v-text-field
                   ref="phone"
                   v-model="phone"
@@ -78,7 +87,7 @@
               <v-card-actions>
                 <v-btn variant="text" @click="goToSignin">Cancel</v-btn>
                 <v-spacer></v-spacer>
-                <v-btn color="primary" variant="text" @click="submit">Submit</v-btn>
+                <v-btn color="primary" variant="text" @click="continue">Continue</v-btn>
               </v-card-actions>
             </v-card>
           </v-col>
@@ -94,7 +103,8 @@
       name: '',
       address: '',
       city: '',
-      country: '',
+      nid: '',
+      dob: '',
       phone: '',
       religion: '',
       gender: '',
@@ -111,7 +121,8 @@
           name: this.name,
           address: this.address,
           city: this.city,
-          country: this.country,
+          nid: this.nid,
+          dob: this.dob,
           phone: this.phone,
           religion: this.religion,
           gender: this.gender,
@@ -144,12 +155,20 @@
   .gradient-background {
     background: url('@/assets/flag.png') no-repeat center center fixed;
     background-size: cover;
-    height: 100vh; 
+    height: 100vh;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
   }
   
   
   .fill-height {
     height: 100vh;
+    overflow-y: auto;
+    position: relative;
+    z-index: 1;
   }
   </style>
   
