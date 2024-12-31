@@ -104,7 +104,6 @@ class Complaint(db.Model):
             "created_at": self.created_at.strftime('%Y-%m-%d %H:%M:%S')
         }
 
-
 @app.route("/api/profile", methods=["GET"])
 def get_profile():
     return jsonify(profile)
@@ -281,8 +280,7 @@ def delete_complaint(complaint_id):
 
 
 if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0', port=5000)
-
+    app.run(debug=True,port=5000)
 
 
 

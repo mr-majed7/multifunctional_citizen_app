@@ -116,6 +116,7 @@ export default {
     async fetchProfile() {
       try {
         const response = await axios.get("http://127.0.0.1:5000/api/profile");
+        console.log(response)
         this.profile = response.data;
       } catch (error) {
         console.error("Error fetching profile:", error);
@@ -124,8 +125,7 @@ export default {
     async saveChanges() {
       try {
         const response = await axios.post(
-          "http://127.0.0.1:5000/api/profile",
-          this.profile
+          "http://127.0.0.1:5000/api/profile"
         );
         alert(response.data.message);
       } catch (error) {
