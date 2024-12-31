@@ -68,8 +68,8 @@ with app.app_context():
     db.create_all()
     contacts = [
         {"service": "Police", "phone_number": "999"},
-        {"service": "Fire", "phone_number": "998"},
-        {"service": "Medical", "phone_number": "997"},
+        {"service": "Fire", "phone_number": "102"},
+        {"service": "Medical", "phone_number": "16263"},
     ]
     for contact in contacts:
         exists = PredefinedContact.query.filter_by(service=contact["service"]).first()
