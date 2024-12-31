@@ -102,6 +102,38 @@
                                     </v-btn>
                                 </v-col>
                             </v-row>
+                            <!-- Divider After First Row -->
+                            <v-divider class="my-4" :thickness="3" color="info"></v-divider>
+
+                            <!-- Second Row: Next Three Images -->
+                            <v-row dense>
+                                <v-col
+                                    v-for="(image, index) in images.slice(6, 9)"
+                                    :key="index"
+                                    cols="4"
+                                    class="d-flex flex-column align-center"
+                                >
+                                    <!-- Large Square Card -->
+                                    <v-card class="pa-0 large-square-card" outlined>
+                                        <v-img
+                                            :src="require(`@/assets/${image.src}`)"
+                                            class="m-0"
+                                            cover
+                                        ></v-img>
+                                    </v-card>
+
+                                    <!-- Button Below Image -->
+                                    <v-btn
+                                        color="primary"
+                                        ripple
+                                        @click="navigateToPage(image.name)"
+                                        small
+                                        class="mt-2"
+                                        >
+                                        {{ image.name }}
+                                    </v-btn>
+                                </v-col>
+                            </v-row>
                         </v-container>
                     </v-main>
                 </v-layout>
@@ -122,18 +154,21 @@ export default  {
                 { src: "Documents.png", name: "Documents" },
                 { src: "Income_tax.png", name: "Income Tax" },
                 { src: "Property_tax.png", name: "Property Tax" },
-                { src: "E_nomination.png", name: "E-Nomination" }, 
+                { src: "E_nomination.png", name: "E-Nomination" },
+                { src: "Passport.jpg", name: "Passport Application" },
+                { src: "traffic_fine.jpg", name: "Traffic Fine" },
+                { src: "Complaint.jpg", name: "Complaint" } 
             ],
         };
     },
     methods: {
         logout() {
             alert("Logged out!");
-            this.$router.push("/signin");
+            this.$router.push("/");
         },
         goToHome() {
             alert("Navigating to Home!");
-            this.$router.push("/");
+            this.$router.push("/home");
             },
             giveFeedback() {
         
@@ -142,8 +177,9 @@ export default  {
         navigateToPage(pageName) {
             if (pageName == "E-Nomination") {
                 this.$router.push("/e-nomination");
-            }else{     
-                alert(`Navigating to: ${pageName}`);
+            }
+            else if (pageName == "Traffic Fine") {
+                this.$router.push("trafficfine");
             }   
         },
     },

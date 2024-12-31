@@ -3,7 +3,9 @@ import Signin from '@/components/Signin.vue';
 import SignUp from '@/components/SignUp.vue'; 
 import HomePage from '@/components/HomePage.vue';
 import Feedback from '@/components/Feedback.vue';
-import ENominationPage from '@/components/Enomination.vue';  
+import ENominationPage from '@/components/Enomination.vue'; 
+import Trafficfine from '@/components/Trafficfine.vue';  
+
 
 const routes = [
   {
@@ -30,6 +32,11 @@ const routes = [
     path: '/e-nomination',
     name: 'ENomination',
     component: ENominationPage, 
+  },
+  {
+    path: '/trafficfine',
+    name: 'Trafficfine',
+    component: Trafficfine, 
   },
 ];
 

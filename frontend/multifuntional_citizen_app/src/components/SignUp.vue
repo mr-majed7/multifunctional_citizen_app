@@ -82,12 +82,20 @@
                   placeholder="example@domain.com"
                   required
                 ></v-text-field>
+                <v-text-field
+                  ref="password"
+                  v-model="password"
+                  :rules="[() => !!password || 'This field is required', value => password.length >=6 || 'Password must be valid']"
+                  label="Password"
+                  placeholder="12345678"
+                  required
+                ></v-text-field>
               </v-card-text>
               <v-divider class="mt-12"></v-divider>
               <v-card-actions>
                 <v-btn variant="text" @click="goToSignin">Cancel</v-btn>
                 <v-spacer></v-spacer>
-                <v-btn color="primary" variant="text" @click="continue">Continue</v-btn>
+                <v-btn color="primary" variant="text" @click="handleSignup">Continue</v-btn>
               </v-card-actions>
             </v-card>
           </v-col>
@@ -96,60 +104,62 @@
     </v-app>
   </template>
   
-  <script>
-  export default {
-    data: () => ({
-      countries: ['Afghanistan', 'Albania', 'Algeria', 'Bangladesh', 'United States', 'India', 'Canada'],
-      name: '',
-      address: '',
-      city: '',
-      nid: '',
-      dob: '',
-      phone: '',
-      religion: '',
-      gender: '',
-      email: '',
-      password: '',
-    }),
-  
-    methods: {
-      goToSignin() {
-        this.$router.push({ name: 'signin' });
-      },
-      async submit() {
-        const form = {
-          name: this.name,
-          address: this.address,
-          city: this.city,
-          nid: this.nid,
-          dob: this.dob,
-          phone: this.phone,
-          religion: this.religion,
-          gender: this.gender,
-          email: this.email,
-          password: this.password,
-        };
+    <script>
+    export default {
+      data: () => ({
+        name: '',
+        address: '',
+        city: '',
+        nid: '',
+        dob: '',
+        phone: '',
+        religion: '',
+        gender: '',
+        email: '',
+        password: '',
+      }),
+
+      methods: {
+      async handleSignup() {
         try {
+          const payload = {
+            name: this.name,
+            address: this.address,
+            city: this.city,
+            nid: this.nid,
+            dob: this.dob,
+            phone: this.phone,
+            religion: this.religion,
+            gender: this.gender,
+            email: this.email,
+            password: this.password,
+          };
           const response = await fetch('http://localhost:5000/signup', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(form),
+            body: JSON.stringify(payload),
           });
           const data = await response.json();
+
           if (response.status === 201) {
             alert('Sign-up successful!');
             this.goToSignin();
           } else {
-            alert(data.message);
+            alert(data.error);
           }
         } catch (error) {
-          console.error(error);
+          console.error('Sign-up error:', error);
           alert('An error occurred during sign-up.');
         }
+      },
+      goToSignin() {
+        this.$router.push('/');
       },
     },
   };
   </script>
+
+
   
   <style scoped>
   .gradient-background {
