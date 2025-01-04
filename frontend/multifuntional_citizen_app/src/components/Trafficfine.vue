@@ -192,7 +192,7 @@
   };
   </script>
   
-  <style>
+  <style scoped>
   .background-container {
     background: linear-gradient(135deg, black, #1a1a1a);
     padding-top: 64px; 

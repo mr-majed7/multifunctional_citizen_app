@@ -272,7 +272,7 @@ export default {
 </script>
 
 
-<style>
+<style scoped>
 body {
   font-family: Arial, sans-serif;
   background-color: #f9f9f9;

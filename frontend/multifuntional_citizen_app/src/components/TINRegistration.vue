@@ -133,7 +133,7 @@
   
   </script>
   
-  <style>
+  <style scoped>
   .container {
     max-width: 600px;
     margin: 50px auto;

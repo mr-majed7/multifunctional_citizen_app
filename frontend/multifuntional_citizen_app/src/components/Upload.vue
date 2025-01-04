@@ -58,7 +58,7 @@
   };
   </script>
   
-  <style>
+  <style scoped>
   v-container {
     margin-top: 50px;
   }

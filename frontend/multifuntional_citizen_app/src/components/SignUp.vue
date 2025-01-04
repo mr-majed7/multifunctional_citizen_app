@@ -95,7 +95,7 @@
               <v-card-actions>
                 <v-btn variant="text" @click="goToSignin">Cancel</v-btn>
                 <v-spacer></v-spacer>
-                <v-btn color="primary" variant="text" @click="handleSignup">Continue</v-btn>
+                <v-btn color="primary" variant="text" @click="this.$router.push('/nidverify')">Continue</v-btn>
               </v-card-actions>
             </v-card>
           </v-col>

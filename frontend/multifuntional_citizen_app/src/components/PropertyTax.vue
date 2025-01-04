@@ -275,34 +275,52 @@
   };
   </script>
   
-  <style>
+  <style scoped>
   body {
     font-family: Arial, sans-serif;
+    background-color: #121212;
+    color: #e0e0e0;
   }
+  
   .container {
-    max-width: 600px; 
+    max-width: 600px;
     margin: 50px auto;
-    padding: 40px; 
-    border: 1px solid #007bff; 
-    border-radius: 8px;
-    background-color: #f0f8ff; 
+    padding: 40px;
+    border-radius: 16px;
+    background: linear-gradient(135deg, #12100e 0%, #2b4162 100%);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
   }
+  
   h1 {
     text-align: center;
+    color: #ffffff;
+    margin-bottom: 20px;
   }
+  
   label {
     font-weight: bold;
+    color: #e0e0e0;
+    margin-bottom: 5px;
+    display: block;
   }
+  
   .form-group {
     margin-bottom: 15px;
   }
+  
   .form-control {
     width: 100%;
     padding: 10px;
     margin-top: 5px;
-    border: 1px solid #ccc;
+    border: 1px solid rgba(255, 255, 255, 0.12);
     border-radius: 4px;
+    background-color: rgba(255, 255, 255, 0.1);
+    color: #e0e0e0;
+    font-size: 16px;
   }
+  
   .btn {
     display: block;
     width: 100%;
@@ -313,17 +331,52 @@
     border: none;
     border-radius: 4px;
     cursor: pointer;
+    transition: background-color 0.3s ease;
+    text-transform: none;
+    font-weight: 600;
+    letter-spacing: 0.5px;
   }
+  
   .btn:hover {
     background-color: #0056b3;
   }
+  
+  .btn:active {
+    background-color: #003f7f;
+  }
+  
   .message {
     margin-top: 20px;
     padding: 10px;
-    background-color: #d4edda;
-    color: #155724;
-    border: 1px solid #c3e6cb;
+    background-color: rgba(212, 237, 218, 0.1);
+    color: #4caf50;
+    border: 1px solid rgba(195, 230, 203, 0.3);
     border-radius: 4px;
     text-align: center;
   }
+  
+  /* Vuetify-specific styles */
+  .v-card__title {
+    background: linear-gradient(135deg, #12100e 0%, #2b4162 100%);
+  }
+  
+  .v-list-item {
+    background: linear-gradient(135deg, #12100e 0%, #2b4162 100%);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+  }
+  
+  .v-list-item:last-child {
+    border-bottom: none;
+  }
+  
+  /* Responsive adjustments */
+  @media (max-width: 600px) {
+    .container {
+      margin: 0;
+      border-radius: 0;
+      padding: 20px;
+    }
+  }
   </style>
+  
+  

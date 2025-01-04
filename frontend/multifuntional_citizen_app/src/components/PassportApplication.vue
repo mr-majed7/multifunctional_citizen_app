@@ -273,54 +273,106 @@
   </script>
   
   
-  <style>
-  body {
-    font-family: Arial, sans-serif;
-    background-color: #f9f9f9;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-  }
+  <style scoped>
   .container {
-    background: #fff;
+    background: linear-gradient(135deg, #12100e 0%, #2b4162 100%);
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
     padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    width: 100%;
+    color: #e0e0e0;
     max-width: 600px;
+    margin: 0 auto;
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
   }
-  h1 {
+  
+  h1, h2, h3 {
+    color: #ffffff;
     text-align: center;
     margin-bottom: 20px;
   }
+  
   form {
     display: flex;
     flex-direction: column;
   }
+  
   label {
     margin-bottom: 5px;
     font-weight: bold;
+    color: #e0e0e0;
   }
+  
   input,
   select,
-  textarea,
-  button {
+  textarea {
     margin-bottom: 15px;
     padding: 10px;
-    border: 1px solid #ccc;
+    border: 1px solid rgba(255, 255, 255, 0.12);
     border-radius: 4px;
     font-size: 16px;
+    background-color: rgba(255, 255, 255, 0.1);
+    color: #e0e0e0;
   }
+  
   button {
+    padding: 10px;
+    border-radius: 4px;
+    font-size: 16px;
     background-color: #007bff;
     color: #fff;
     border: none;
     cursor: pointer;
+    transition: background-color 0.3s ease;
+    text-transform: none;
+    font-weight: 600;
+    letter-spacing: 0.5px;
   }
+  
   button:hover {
     background-color: #0056b3;
   }
+  
+  button:active {
+    background-color: #003f7f;
+  }
+  
+  .v-card__title {
+    background: linear-gradient(135deg, #12100e 0%, #2b4162 100%);
+  }
+  
+  .v-list-item {
+    background: linear-gradient(135deg, #12100e 0%, #2b4162 100%);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+  }
+  
+  .v-list-item:last-child {
+    border-bottom: none;
+  }
+  
+  /* Add some spacing between form sections */
+  h2 {
+    margin-top: 30px;
+  }
+  
+  /* Style for the checkbox */
+  input[type="checkbox"] {
+    margin-right: 10px;
+  }
+  
+  /* Style for the success message */
+  .v-card__text {
+    color: #4caf50;
+    font-weight: bold;
+  }
+  
+  /* Responsive adjustments */
+  @media (max-width: 600px) {
+    .container {
+      width: 100%;
+      border-radius: 0;
+    }
+  }
   </style>
+  
+  
