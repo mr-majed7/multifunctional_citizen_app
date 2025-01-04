@@ -1,21 +1,23 @@
 from flask_migrate import Migrate
 from datetime import datetime
+from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.orm import relationship
-from decouple import config
+# from decouple import config
 from flask import Flask, request, jsonify, send_from_directory
 from flask_cors import CORS
+from db_connect import get_db_connection
 from controllers.detect_text import detect_text
 from controllers.utility_bills import fetch_bills, update_bill_status
 from controllers.payments import add_payment_details
 from controllers.service_req import submit_request
 import os
-import mysql.connector
+# import mysql.connector
 import bcrypt
 import jwt
-import datetime
+from datetime import datetime
 
 app = Flask(__name__)
-#CORS(app, origins="*")
+CORS(app, origins="*")
 
 UPLOAD_FOLDER = 'uploads'
 ALLOWED_EXTENSIONS = {'pdf', 'jpg', 'jpeg', 'png'}
@@ -24,17 +26,6 @@ if not os.path.exists(UPLOAD_FOLDER):
     os.makedirs(UPLOAD_FOLDER)
 
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
-
-db_config = {
-    'host': 'localhost',  
-    'user': 'root',        
-    'password': '12345',  
-    'database': 'multifunctional_citizen_app'
-}
-def get_db_connection():
-    return mysql.connector.connect(**db_config)
-def allowed_file(filename):
-    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 applications = {}
 application_id_counter = 10000000000
@@ -224,9 +215,8 @@ def register_tin():
     except Exception as e:
         return jsonify({'error': f'An error occurred: {str(e)}'}), 500
        
-CORS(app,"origins": "*")
 #app.config['SQLALCHEMY_DATABASE_URI'] = config('DATABASE_URI')
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:sammy@localhost/multifunctional_citizen_app'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:a1b2c3d4e5@localhost/multifunctional_citizen'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
@@ -350,16 +340,16 @@ def serve_uploaded_file(filename):
     return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
 
 
-#@app.route('/login', methods=['POST'])
-#def login():
- #   data = request.json
-  #  username = data.get('username')
-   # password = data.get('password')
+@app.route('/login', methods=['POST'])
+def login():
+    data = request.json
+    username = data.get('username')
+    password = data.get('password')
 
-    #if username in users and users[username] == password:
-     #   return jsonify({"loggedIn": True, "message": "Login successful!"}), 200
-    #else:
-    #    return jsonify({"loggedIn": False, "message": "Invalid credentials!"}), 401
+    if username in users and users[username] == password:
+       return jsonify({"loggedIn": True, "message": "Login successful!"}), 200
+    else:
+       return jsonify({"loggedIn": False, "message": "Invalid credentials!"}), 401
 
 @app.route('/candidates', methods=['GET'])
 def get_candidates():
@@ -375,13 +365,6 @@ def submit_vote():
         return jsonify({"message": "You have already voted!"}), 400
     votes[client_ip] = candidate_id
     return jsonify({"message": "Your vote has been submitted!"}), 200
-
-  #  if username not in users:
-   #     return jsonify({"message": "User not authenticated!"}), 401
-
-   # votes[username] = candidate_id
-    #return jsonify({"message": "Your vote has been submitted!"}), 200
-
 
 @app.route('/emergency/personal', methods=['POST'])
 def add_personal_contact():
@@ -434,9 +417,6 @@ def delete_personal_contact(user_id, contact_id):
     db.session.commit()
     return jsonify({"message": "Contact deleted successfully!"})
 
-
-#if __name__ == '__main__':
-  #  app.run(debug=True)
 
 @app.errorhandler(Exception)
 def handle_exception(e):
@@ -535,16 +515,6 @@ def handle_submit_request(user_id, req_type):
     return jsonify(response), status_code
 
 app.config['SECRET_KEY'] = '39039'
-
-
-def get_db_connection():
-    return mysql.connector.connect(
-        host="localhost",
-        user="root",
-        password="39039",
-        database="multifunctional_citizen_app"
-    )
-
 
 @app.route('/signup', methods=['POST'])
 def signup():
@@ -691,7 +661,7 @@ def submit_feedback():
 def get_fines():
     try:
         connection = get_db_connection()
-        cursor = connection.cursor(dictionary=True)
+        cursor = connection.cursor()
         query = """
             SELECT users.name, users.nid, traffic_fine.case_number, traffic_fine.cause, traffic_fine.due_payment, traffic_fine.status
             FROM traffic_fine
