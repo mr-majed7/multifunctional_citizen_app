@@ -2,12 +2,13 @@ from db_connect import get_db_connection
 
 
 def fetch_bills(nid_number):
+    print(nid_number)
     try:
         connection = get_db_connection()
         with connection.cursor() as cursor:
             cursor.execute("SELECT * FROM utility_bills WHERE nid_number = %s", (nid_number,))
             bills = cursor.fetchall()
-
+            print(bills)
             return bills, None
 
     except Exception as e:

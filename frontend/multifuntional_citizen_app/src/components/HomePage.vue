@@ -38,7 +38,7 @@
 
                         <v-list dense nav>
                             <v-list-item prepend-icon="mdi-update" title="Edit Profile" ripple @click="goToHome"></v-list-item>
-                            <v-list-item prepend-icon="mdi-file-document-edit" title="Update Document" ripple @click="goToHome"></v-list-item>
+                            <v-list-item prepend-icon="mdi-file-document-edit" title="Update Document" ripple @click="this.$router.push('/doc_correction')"></v-list-item>
                             <v-list-item prepend-icon="mdi-numeric" title="Important Numbers" ripple @click="goToHome"></v-list-item>
                         </v-list>
                     </v-navigation-drawer>

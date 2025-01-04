@@ -70,7 +70,6 @@ export default {
         description: '',
         user_id: null, 
       },
-      
       complaints: [],
       snackbar: {
         visible: false,
@@ -84,22 +83,10 @@ export default {
     };
   },
   
-   
-  async mounted() {
-      try {
-       const response = await axios.get('/me'); // Replace with actaul user login credentials
-       this.newComplaint.user_id = response.data.id; 
-       console.log('User ID set:', this.newComplaint.user_id);
-     } catch (error) {
-       console.error('Failed to fetch user info:', error);
-       this.snackbar.message = 'Failed to fetch user information.';
-       this.snackbar.color = 'red';
-       this.snackbar.visible = true;
-     }
-  },
 
   methods: {
     async fetchComplaints() {
+      this.newComplaint.user_id = localStorage.getItem('user_id');
       try {
         const response = await axios.get(`/complaints/${this.newComplaint.user_id}`);
         this.complaints = response.data;
