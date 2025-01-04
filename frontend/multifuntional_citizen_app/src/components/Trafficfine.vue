@@ -13,18 +13,16 @@
   
       <v-container fluid class="background-container">
         <v-layout>
-          
           <v-navigation-drawer
-            v-model="drawer"
+          v-model="drawer"
             :rail="rail"
             permanent
             class="elevation-2 full-height no-gap"
             @click="rail = false"
           >
             <v-list-item
-              prepend-avatar="https://randomuser.me/api/portraits/men/85.jpg"
-              title="John Leider"
-              subtitle="Admin"
+              prepend-avatar="/citizen_logo.png"
+              title="Welcome To Citizen App"
             >
               <template v-slot:append>
                 <v-btn icon variant="text" @click.stop="rail = !rail">
@@ -36,9 +34,9 @@
             <v-divider></v-divider>
   
             <v-list dense nav>
-              <v-list-item prepend-icon="mdi-home-city" title="Home" @click="goToHome"></v-list-item>
-              <v-list-item prepend-icon="mdi-account" title="My Account"></v-list-item>
-              <v-list-item prepend-icon="mdi-account-group-outline" title="Users"></v-list-item>
+              <v-list-item prepend-icon="mdi-update" title="Edit Profile" @click="goToHome"></v-list-item>
+              <v-list-item prepend-icon="mdi-file-document-edit" title="Update Document"></v-list-item>
+              <v-list-item prepend-icon="mdi-numeric" title="Important Numbers"></v-list-item>
             </v-list>
           </v-navigation-drawer>
   

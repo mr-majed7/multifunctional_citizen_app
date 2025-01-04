@@ -22,9 +22,8 @@
 
           >
             <v-list-item
-              prepend-avatar="https://randomuser.me/api/portraits/men/85.jpg"
-              title="John Leider"
-              subtitle="Admin"
+              prepend-avatar="@/assets/citizen_logo.png"
+              title="Welcome To Citizen App"
             >
               <template v-slot:append>
                 <v-btn icon variant="text" @click.stop="rail = !rail">
@@ -36,9 +35,9 @@
             <v-divider></v-divider>
   
             <v-list dense nav>
-              <v-list-item prepend-icon="mdi-home-city" title="Home" @click="goToHome"></v-list-item>
-              <v-list-item prepend-icon="mdi-account" title="My Account"></v-list-item>
-              <v-list-item prepend-icon="mdi-account-group-outline" title="Users"></v-list-item>
+              <v-list-item prepend-icon="mdi-home-city" title="Edit Profile" @click="goToHome"></v-list-item>
+              <v-list-item prepend-icon="mdi-account" title="Update Document"></v-list-item>
+              <v-list-item prepend-icon="mdi-account-group-outline" title="Important Numbers"></v-list-item>
             </v-list>
           </v-navigation-drawer>
   
