@@ -19,9 +19,10 @@
             permanent
             class="elevation-2 full-height no-gap"
             @click="rail = false"
+
           >
             <v-list-item
-              prepend-avatar="@/assets/citizen_logo.png"
+              prepend-avatar="/citizen_logo.png"
               title="Welcome To Citizen App"
             >
               <template v-slot:append>
@@ -34,9 +35,9 @@
             <v-divider></v-divider>
   
             <v-list dense nav>
-              <v-list-item prepend-icon="mdi-home-city" title="Edit Profile" @click="goToHome"></v-list-item>
-              <v-list-item prepend-icon="mdi-account" title="Update Document"></v-list-item>
-              <v-list-item prepend-icon="mdi-account-group-outline" title="Important Numbers"></v-list-item>
+              <v-list-item prepend-icon="mdi-update" title="Edit Profile" ripple @click="goToHome"></v-list-item>
+              <v-list-item prepend-icon="mdi-file-document-edit" title="Update Document" ripple @click="goToHome"></v-list-item>
+              <v-list-item prepend-icon="mdi-numeric" title="Important Numbers" ripple @click="goToHome"></v-list-item>
             </v-list>
           </v-navigation-drawer>
 
@@ -176,7 +177,7 @@
         this.$router.push("/signin");
       },
       goToHome() {
-        this.$router.push("/");
+        this.$router.push("/home");
       },
       submitForm() {
         if (this.$refs.form.validate()) {
