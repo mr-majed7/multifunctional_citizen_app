@@ -1,5 +1,5 @@
 <template>
-    <v-app id="e-nomination-app">
+    <v-app id="Traffic Fine">
       <v-app-bar color="#0d1117" dark app>
         <v-toolbar-title>Citizen App - E-Nomination</v-toolbar-title>
         <v-spacer></v-spacer>
@@ -13,18 +13,16 @@
   
       <v-container fluid class="background-container">
         <v-layout>
-          
           <v-navigation-drawer
-            v-model="drawer"
+          v-model="drawer"
             :rail="rail"
             permanent
             class="elevation-2 full-height no-gap"
             @click="rail = false"
           >
             <v-list-item
-              prepend-avatar="https://randomuser.me/api/portraits/men/85.jpg"
-              title="John Leider"
-              subtitle="Admin"
+              prepend-avatar="/citizen_logo.png"
+              title="Welcome To Citizen App"
             >
               <template v-slot:append>
                 <v-btn icon variant="text" @click.stop="rail = !rail">
@@ -36,9 +34,9 @@
             <v-divider></v-divider>
   
             <v-list dense nav>
-              <v-list-item prepend-icon="mdi-home-city" title="Home" @click="goToHome"></v-list-item>
-              <v-list-item prepend-icon="mdi-account" title="My Account"></v-list-item>
-              <v-list-item prepend-icon="mdi-account-group-outline" title="Users"></v-list-item>
+              <v-list-item prepend-icon="mdi-update" title="Edit Profile" ripple @click="goToHome"></v-list-item>
+              <v-list-item prepend-icon="mdi-file-document-edit" title="Update Document" ripple @click="goToHome"></v-list-item>
+              <v-list-item prepend-icon="mdi-numeric" title="Important Numbers" ripple @click="goToHome"></v-list-item>
             </v-list>
           </v-navigation-drawer>
   
@@ -146,6 +144,7 @@
         fines: [],
         loading: true,
         drawer: true,
+        rail: true,
       };
     },
     methods: {
@@ -182,9 +181,6 @@
         alert("Logged out!");
         this.$router.push("/signin");
       },
-      toggleDrawer() {
-        this.drawer = !this.drawer;
-      },
     },
     mounted() {
       this.fetchFines();
@@ -209,13 +205,6 @@
     transform: translateY(-5px);
     box-shadow: 0 12px 20px rgba(0, 0, 0, 0.2);
   }
-  .v-navigation-drawer {
-      position: fixed;
-      top: 64px; 
-      left: 0; 
-      height: calc(100vh - 64px); 
-      margin: 0 !important;
-      padding: 0 !important;
-    }
+
   </style>
   
