@@ -4,6 +4,9 @@
       <v-container>
         <router-view></router-view>
       </v-container>
+      <v-container>
+        <router-view></router-view>
+      </v-container>
     </v-main>
   </v-app>
 </template>
@@ -12,9 +15,8 @@
 <script>
 
 
-export default {
-  name: 'App',
 
+export default {
   components: {
   },
   mounted() {
