@@ -1,4 +1,4 @@
-<template>
+ <template>
     <v-app>
       <v-container fluid class="fill-height background-image">
         <v-row justify="center" align="center">
@@ -83,11 +83,24 @@
       password: '',
     }),
     methods: {
-      handleLogin() {
-        if (this.email === 'user@example.com' && this.password === 'password123') {
-          this.$router.push('/home'); 
-        } else {
-          alert('Invalid login credentials. Please try again!');
+      async handleLogin() {
+        try {
+          const response = await fetch('http://localhost:5000/', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email: this.email, password: this.password })
+          });
+          const data = await response.json();
+          if (response.status === 200) {
+            localStorage.setItem('user_id', data.user_id);
+            localStorage.setItem('nid_number', data.nid);          
+            this.$router.push('/home');
+          } else {
+            alert(data.message);
+          }
+        } catch (error) {
+          console.error(error);
+          alert('An error occurred during login.');
         }
       },
     },

@@ -85,16 +85,16 @@
                               v-model="formData[question.model]"
                               class="d-flex justify-sm-space-between px-6 pt-2 pb-6"
                             >
-                              <v-item v-for="n in 5" :key="n">
+                              <v-item v-for="n in 5" :key="n - 1">
                                 <template v-slot:default="{ toggle }">
                                   <v-btn
-                                    :active="formData[question.model] != null && formData[question.model] + 1 >= n"
-                                    :icon="`mdi-numeric-${n}`"
+                                    :active="formData[question.model] != null && formData[question.model] === n - 1"
+                                    :icon="`mdi-numeric-${n - 1}`"
                                     height="40"
                                     variant="text"
                                     width="40"
                                     border
-                                    @click="toggle"
+                                    @click="formData[question.model] = n - 1"
                                   ></v-btn>
                                 </template>
                               </v-item>
@@ -103,7 +103,7 @@
                         </div>
   
                         <v-textarea
-                          v-model="formData.feedback"
+                          v-model="formData.feedback_text"
                           label="Additional Feedback"
                           hint="Optional"
                           outlined
@@ -122,6 +122,26 @@
                           Submit
                         </v-btn>
                       </v-form>
+                    </v-card-text>
+                  </v-card>
+                </v-col>
+
+
+                <v-col :cols="4">
+                  <v-card elevation="10" class="faq-card">
+                    <v-card-title class="text-h5 font-weight-bold">
+                      Frequently Asked Questions
+                    </v-card-title>
+                    <v-card-text>
+                      <v-expansion-panels>
+                        <v-expansion-panel
+                          v-for="(faq, index) in faqList"
+                          :key="index"
+                          :title="faq.question"
+                          :text="faq.answer"
+                        >
+                        </v-expansion-panel>
+                      </v-expansion-panels>
                     </v-card-text>
                   </v-card>
                 </v-col>
@@ -149,26 +169,60 @@
           experience: null,
           usability: null,
           recommendation: null,
-          feedback: "",
+          feedback_text: "",
         },
         surveyQuestions: [
           { text: "How satisfied are you with developing using Vuetify?", model: "experience" },
           { text: "How would you rate the usability?", model: "usability" },
           { text: "Would you recommend this service to others?", model: "recommendation" },
         ],
+        faqList: [
+          { question: "How can I view my bills?", answer: "Go to the Utility Bill Management section to view and pay your bills." },
+          { question: "How do I reset my password?", answer: "Go to Profile Management and select 'Reset Password'." },
+          { question: "Can I apply for a passport?", answer: "Yes, you can apply for a passport through the Passport Application section." },
+          { question: "How do I register on the Citizen App?", answer: "To register, click on the 'Register' button on the login screen. Provide your NID, email address, and mobile number. Verify your account using the code sent to you and set a password to complete the process." },
+          { question: "How can I reset my password if I forget it?", answer: "Click on 'Forgot Password' on the login screen. Enter your registered email or NID to receive a reset link. Follow the link to create a new password." },          
+          { question: "What services are linked to my NID?", answer: "Your NID links to services like utility bill management (electricity, gas, water), TIN registration, and document access, ensuring accurate billing and service availability." },
+          { question: "How do I pay my utility bills using the app?", answer: "Navigate to 'Utility Bill Management,' select the bill type, enter details, confirm the payment, and choose a payment method. A receipt will be generated upon completion." },
+          { question: "Can I correct errors in government documents through the app?", answer: "Yes, use the 'Document Correction' section to submit requests. Upload the incorrect document and provide correct information to receive updates on your request." },
+          { question: "How do I access support if I face issues?", answer: "Visit the 'Support and Feedback' section to submit tickets or feedback. Alternatively, explore the FAQ for common queries." },
+          { question: "What documents can I store and access through the app?", answer: "Store and access property deeds, tax receipts, and utility bills. Some documents may require a fee for access or download." },
+          { question: "How can I apply for a passport using the app?", answer: "In the 'Passport Application' section, fill out the form with your details and upload required documents. Receive updates on your application's status." },
+          { question: "How does the voting system work in the app?", answer: "Authenticate with your NID during the voting period to access the interface. Cast or modify your vote until the voting window closes." },
+          { question: "What is the purpose of the emergency contact feature?", answer: "The emergency contact feature provides quick access to police, fire, and medical numbers, and allows saving personal emergency contacts for critical situations." }
+        ],
       };
     },
     methods: {
       logout() {
         alert("Logged out!");
-        this.$router.push("/signin");
-      },
-      goToHome() {
         this.$router.push("/");
       },
-      submitForm() {
+      goToHome() {
+        this.$router.push("/home");
+      },
+      async submitForm() {
         if (this.$refs.form.validate()) {
-          alert("Feedback submitted!");
+          try {
+            const response = await fetch("http://localhost:5000/feedback", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify(this.formData),
+            });
+
+            if (response.ok) {
+              const data = await response.json();
+              alert(data.message || "Feedback submitted successfully!");
+            } else {
+              const errorData = await response.json();
+              alert(errorData.error || "Failed to submit feedback.");
+            }
+          } catch (error) {
+            console.error(error);
+            alert("An error occurred while submitting feedback.");
+          }
         }
       },
     },
