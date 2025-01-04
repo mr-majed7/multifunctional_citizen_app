@@ -11,40 +11,7 @@ import Trafficfine from "@/components/Trafficfine.vue";
 import UtilityBill from "@/components/UtilityBill.vue";
 import { createRouter, createWebHistory } from "vue-router";
 
-const routes = [
-  {
-    path: "/",
-    name: "signin",
-    component: Signin,
-  },
-  {
-    path: "/signup",
-    name: "signup",
-    component: SignUp,
-  },
-  {
-    path: "/home",
-    name: "home",
-    component: HomePage,
-  },
-  {
-    path: "/feedback",
-    name: "Feedback",
-    component: Feedback,
-  },
-  {
-    path: "/e-nomination",
-    name: "ENomination",
-    component: ENominationPage,
-  },
-  {
-    path: "/trafficfine",
-    name: "Trafficfine",
-    component: Trafficfine,
-  },
-];
-
-const routes = createRouter({
+const router = createRouter({
   history: createWebHistory(),
   routes: [
     { path: "/nidverify", name: "NIDVerify", component: NIDVerify },
@@ -55,6 +22,11 @@ const routes = createRouter({
       path: "/doc_correction",
       name: "DocumentCorrection",
       component: DocumentCorrection,
+    },
+    {
+      path: "/trafficfine",
+      name: "Trafficfine",
+      component: Trafficfine,
     },
     { path: "/", name: "signin", component: Signin },
     { path: "/signup", name: "signup", component: SignUp },
