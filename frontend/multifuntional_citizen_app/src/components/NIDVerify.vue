@@ -146,7 +146,7 @@ export default {
       formData.append("image", this.uploadedFile);
 
       try {
-        const response = await axios.post("http://127.0.0.1:5000/detect-text", formData, {
+        const response = await axios.post("https://multifunctional-citizen-app-api.onrender.com/detect-text", formData, {
           headers: {
             "Content-Type": "multipart/form-data",
           },

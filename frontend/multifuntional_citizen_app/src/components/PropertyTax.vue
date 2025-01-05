@@ -219,7 +219,7 @@
                 }
               });
   
-                 const response = await fetch('http://127.0.0.1:5000/api/property-tax', {
+                 const response = await fetch('https://multifunctional-citizen-app-api.onrender.com/api/property-tax', {
                    method: 'POST',
                    body: formData,
                  });
@@ -240,7 +240,7 @@
        },
        async fetchRecords() {
         try {
-          const response = await fetch('http://127.0.0.1:5000/api/records');
+          const response = await fetch('https://multifunctional-citizen-app-api.onrender.com/api/records');
           if (!response.ok) {
             throw new Error('Failed to fetch records');
           }

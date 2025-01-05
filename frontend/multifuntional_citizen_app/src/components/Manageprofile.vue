@@ -12,7 +12,7 @@
               class="mx-auto"
             >
               <v-img
-                :src="'http://127.0.0.1:5000/uploads/' + profile.profile_photo"
+                :src="'https://multifunctional-citizen-app-api.onrender.com/uploads/' + profile.profile_photo"
                 alt="Profile Photo"
               ></v-img>
             </v-avatar>
@@ -115,7 +115,7 @@ export default {
   methods: {
     async fetchProfile() {
       try {
-        const response = await axios.get("http://127.0.0.1:5000/api/profile");
+        const response = await axios.get("https://multifunctional-citizen-app-api.onrender.com/api/profile");
         console.log(response)
         this.profile = response.data;
       } catch (error) {
@@ -125,7 +125,7 @@ export default {
     async saveChanges() {
       try {
         const response = await axios.post(
-          "http://127.0.0.1:5000/api/profile"
+          "https://multifunctional-citizen-app-api.onrender.com/api/profile"
         );
         alert(response.data.message);
       } catch (error) {
@@ -142,7 +142,7 @@ export default {
 
       try {
         const response = await axios.post(
-          "http://127.0.0.1:5000/api/profile/photo",
+          "https://multifunctional-citizen-app-api.onrender.com/api/profile/photo",
           formData,
           {
             headers: {

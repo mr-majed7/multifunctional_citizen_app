@@ -51,7 +51,7 @@
     methods: {
       async fetchFiles() {
         try {
-          const response = await axios.get("http://127.0.0.1:5000/files");
+          const response = await axios.get("https://multifunctional-citizen-app-api.onrender.com/files");
           this.files = response.data;
         } catch (error) {
           console.error("Error fetching files:", error);
@@ -60,7 +60,7 @@
       async downloadFile(filename) {
         try {
           const response = await axios.get(
-            `http://127.0.0.1:5000/download/${filename}`,
+            `https://multifunctional-citizen-app-api.onrender.com/download/${filename}`,
             {
               responseType: "blob", 
             }

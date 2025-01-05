@@ -242,7 +242,7 @@
     },
     async submitStep4() {
       try {
-        const response = await axios.post("http://127.0.0.1:5000/submit_application", this.form);
+        const response = await axios.post("https://multifunctional-citizen-app-api.onrender.com/submit_application", this.form);
         this.applicationId = response.data.id;
         this.receiptPath = response.data.receipt_path;
         this.currentStep = 5;
@@ -252,7 +252,7 @@
     },
     async downloadReceipt() {
       try {
-        const response = await axios.get("http://127.0.0.1:5000/api/download-receipt", {
+        const response = await axios.get("https://multifunctional-citizen-app-api.onrender.com/api/download-receipt", {
           params: { path: this.receiptPath },
           responseType: "blob",
         });

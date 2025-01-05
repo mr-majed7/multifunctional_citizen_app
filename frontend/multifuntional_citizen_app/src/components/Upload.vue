@@ -42,7 +42,7 @@
         formData.append("file", this.file);
   
         try {
-          const response = await axios.post("http://127.0.0.1:5000/upload", formData, {
+          const response = await axios.post("https://multifunctional-citizen-app-api.onrender.com/upload", formData, {
             headers: {
               "Content-Type": "multipart/form-data",
             },
