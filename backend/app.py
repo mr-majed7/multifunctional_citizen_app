@@ -217,7 +217,7 @@ def register_tin():
     except Exception as e:
         return jsonify({'error': f'An error occurred: {str(e)}'}), 500
        
-#app.config['SQLALCHEMY_DATABASE_URI'] = config('DATABASE_URI')
+app.config['SQLALCHEMY_DATABASE_URI'] = config('DATABASE_URL')
 DB_USER = "root"
 DB_PASSWORD = os.getenv("AWS_RDS_PASSWORD", "")
 DB_HOST = os.getenv("AWS_RDS_HOST", "localhost")
