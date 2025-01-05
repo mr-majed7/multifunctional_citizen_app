@@ -2,6 +2,8 @@ from flask_migrate import Migrate
 from datetime import datetime
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.orm import relationship
+import tempfile
+import re
 # from decouple import config
 from flask import Flask, request, jsonify, send_from_directory
 from flask_cors import CORS
@@ -10,6 +12,8 @@ from controllers.detect_text import detect_text
 from controllers.utility_bills import fetch_bills, update_bill_status
 from controllers.payments import add_payment_details
 from controllers.service_req import submit_request
+from werkzeug.utils import secure_filename
+import random
 import os
 # import mysql.connector
 import bcrypt
@@ -152,6 +156,7 @@ def property_tax():
 
         return jsonify({"message": "Form submitted successfully!"})
     except Exception as e:
+        print("Error submitting form:", e)
         return jsonify({"error": str(e)}), 500
 
 @app.route('/api/records', methods=['GET'])
@@ -184,7 +189,7 @@ def register_tin():
 
        
         file_path = None
-        if file and allowed_file(file.filename):
+        if file:
             filename = secure_filename(file.filename)
             file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
             file.save(file_path)
@@ -541,30 +546,26 @@ def signup():
 
         print("Attempting to register user with email:", email)
 
-        cursor.execute("""
-            INSERT INTO users (name, address, city, nid, dob, phone, religion, gender, email, password)
-            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
-        """, (name, address, city, nid, dob, phone, religion, gender, email, hashed_password))
+        try:
+            cursor.execute("""
+                INSERT INTO users (name, address, city, nid, dob, phone, religion, gender, email, password)
+                VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+            """, (name, address, city, nid, dob, phone, religion, gender, email, hashed_password))
 
-        conn.commit()
-        print("User registered successfully with email:", email)
+            conn.commit()
+            print("User registered successfully with email:", email)
 
-        cursor.close()
-        conn.close()
-
-        return jsonify({"message": "User registered successfully"}), 201
-
-    except mysql.connector.IntegrityError as e:
-        print("Database Integrity Error:", str(e))
-        return jsonify({"error": "Email or NID already exists"}), 409
-    except Exception as e:
-        print("Error occurred during signup:", str(e))
-        return jsonify({"error": "An error occurred"}), 500
-    finally:
-        if 'cursor' in locals() and cursor:
+            return jsonify({"message": "User registered successfully"}), 201  # Add a return here
+        except Exception as e:
+            print("Error occurred during signup:", str(e))
+            return jsonify({"error": "An error occurred"}), 500
+        finally:
             cursor.close()
-        if 'conn' in locals() and conn:
             conn.close()
+    except Exception as e:
+        print("Error occurred during signup process:", str(e))
+        return jsonify({"error": "An error occurred"}), 500
+
 
 @app.route('/', methods=['POST'])
 def signin():
@@ -578,7 +579,7 @@ def signin():
 
     try:
         conn = get_db_connection()
-        cursor = conn.cursor(dictionary=True)
+        cursor = conn.cursor()
 
         print("Attempting to sign in user with email:", email)
 
@@ -594,17 +595,16 @@ def signin():
         if bcrypt.checkpw(password.encode('utf-8'), user['password'].encode('utf-8')):
             print("Password matched for user ID:", user['id'])  
 
-            token = jwt.encode(
-                {'user_id': user['id'], 'exp': datetime.datetime.utcnow() + datetime.timedelta(hours=24)},
-                app.config['SECRET_KEY'],
-                algorithm='HS256'
-            )
+            # token = jwt.encode(
+            #     {'user_id': user['id'], 'exp': datetime.utcnow() + datetime.timedelta(hours=24)},
+            #     app.config['SECRET_KEY'],
+            #     algorithm='HS256'
+            # )
 
-            print("JWT generated successfully for user ID:", user['id'])  
+            # print("JWT generated successfully for user ID:", user['id'])  
 
             return jsonify({
                 "message": "Login successful",
-                "token": token,
                 "user_id": user['id'],
                 "nid": user['nid']
             }), 200

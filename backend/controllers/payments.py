@@ -8,7 +8,6 @@ def add_payment_details(payment_details):
     time = payment_details.get('time')
     cardholders_name = payment_details.get('cardholders_name')
     card_number = payment_details.get('card_number')
-
     try:
         connection = get_db_connection()
         with connection.cursor() as cursor:

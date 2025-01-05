@@ -54,16 +54,16 @@
                                 >
                                     <v-card class="pa-0 large-square-card" outlined>
                                         <v-img
-                                        :src="require(`@/assets/${image.src}`)"
-                                        class="m-0"
-                                        cover
+                                            :src="require(`@/assets/${image.src}`)"
+                                            class="m-0"
+                                            cover
                                         ></v-img>
                                     </v-card>
 
                                     <v-btn
                                         color="primary"
                                         ripple
-                                        @click="navigateToPage(image.name)"
+                                        @click="navigateToPage(image.path)"
                                         small
                                         class="mt-2"
                                     >
@@ -71,6 +71,7 @@
                                     </v-btn>
                                 </v-col>
                             </v-row>
+
 
 
                             <v-divider class="my-4" :thickness="3" color="info"></v-divider>
@@ -93,7 +94,7 @@
                                     <v-btn
                                         color="primary"
                                         ripple
-                                        @click="navigateToPage(image.name)"
+                                        @click="navigateToPage(image.path)"
                                         small
                                         class="mt-2"
                                     >
@@ -125,7 +126,7 @@
                                     <v-btn
                                         color="primary"
                                         ripple
-                                        @click="navigateToPage(image.name)"
+                                        @click="navigateToPage(image.path)"
                                         small
                                         class="mt-2"
                                         >
@@ -148,15 +149,15 @@ export default  {
             drawer: true,
             rail: true,
             images: [
-                { src: "Utility.png", name: "Utility Payment" },
-                { src: "Vote.png", name: "Vote" },
-                { src: "Documents.png", name: "Documents" },
-                { src: "Income_tax.png", name: "Income Tax" },
-                { src: "Property_tax.png", name: "Property Tax" },
-                { src: "E_nomination.png", name: "E-Nomination" },
-                { src: "Passport.jpg", name: "Passport Application" },
-                { src: "traffic_fine.jpg", name: "Traffic Fine" },
-                { src: "Complaint.jpg", name: "Complaint" } 
+                { src: "utbill.png", name: "Utility Payment",path:"/utbill" },
+                { src: "votesystem.png", name: "Vote",path:"/votesystem" },
+                { src: "Documents.png", name: "Documents",path: "/listfiles"},
+                { src: "Income_tax.png", name: "Income Tax",path:"/income_tax" },
+                { src: "Property_tax.png", name: "Property Tax",path: "/propertytax" },
+                { src: "E_nomination.png", name: "E-Nomination",path: "/e-nomination" },
+                { src: "Passport.jpg", name: "Passport Application", path: "/passportapplication" },
+                { src: "traffic_fine.jpg", name: "Traffic Fine",path: "/trafficfine" },
+                { src: "Complaint.jpg", name: "Complaint", path: "/complaints" } 
             ],
         };
     },
@@ -173,14 +174,14 @@ export default  {
         
         this.$router.push('/feedback'); 
         },
-        navigateToPage(pageName) {
-            if (pageName == "E-Nomination") {
-                this.$router.push("/e-nomination");
-            }
-            else if (pageName == "Traffic Fine") {
-                this.$router.push("trafficfine");
-            }   
-        },
+        navigateToPage(path) {
+        if (path) {
+            this.$router.push(path);
+        } else {
+            console.error("Path not defined for this image.");
+            alert("Path not defined for this image!");
+        }
+    },
     },
 };
 </script>

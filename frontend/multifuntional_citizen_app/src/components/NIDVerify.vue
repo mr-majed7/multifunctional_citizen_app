@@ -109,6 +109,7 @@
 
 <script>
 import axios from "axios";
+import userData from "../data";
 
 export default {
   data() {
@@ -165,8 +166,78 @@ export default {
       }
     },
     confirmData() {
-      this.showSnackbar("NID information confirmed", "success");
-      this.$router.push("/home");
+      const latestUserInput = userData[userData.length - 1];
+
+      if (!latestUserInput) {
+        this.showSnackbar("No user data found for comparison.", "error");
+        return;
+      }
+
+      const normalizeDate = (date) => {
+        try {
+          const parsedDate = new Date(date);
+          const year = parsedDate.getFullYear();
+          const month = String(parsedDate.getMonth() + 1).padStart(2, "0"); // Months are 0-indexed
+          const day = String(parsedDate.getDate()).padStart(2, "0");
+          return `${year}-${month}-${day}`;
+        } catch {
+          return null; 
+        }
+      };
+
+      const extractedDob = normalizeDate(this.extractedData["Date of Birth"]);
+      const userDob = latestUserInput.dob.trim();
+
+      const mismatches = [];
+
+      if (
+        latestUserInput.name.trim().toLowerCase() !==
+        (this.extractedData.Name || "").trim().toLowerCase()
+      ) {
+        mismatches.push(
+          `Name mismatch: Expected "${latestUserInput.name}", found "${this.extractedData.Name}"`
+        );
+      }
+
+      if (userDob !== extractedDob) {
+        mismatches.push(
+          `Date of Birth mismatch: Expected "${userDob}", found "${this.extractedData["Date of Birth"]}"`
+        );
+      }
+
+      if (latestUserInput.nid.trim() !== (this.extractedData["NID Number"] || "").trim()) {
+        mismatches.push(
+          `NID Number mismatch: Expected "${latestUserInput.nid}", found "${this.extractedData["NID Number"]}"`
+        );
+      }
+
+      if (mismatches.length === 0) {
+        this.showSnackbar("NID information matches successfully!", "success");
+        this.handleSignup(); 
+      } else {
+        this.showSnackbar(mismatches.join("\n"), "error");
+      }
+    },
+    async handleSignup() {
+      try {
+        const payload = userData[userData.length - 1];
+        const response = await fetch('http://localhost:5000/signup', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload),
+        });
+        const data = await response.json();
+
+        if (response.status === 201) {
+          alert('Sign-up successful!');
+          this.$router.push('/');
+        } else {
+          alert(data.error);
+        }
+      } catch (error) {
+        console.error('Sign-up error:', error);
+        alert('An error occurred during sign-up.');
+      }
     },
     reset() {
       this.uploadedFile = null;

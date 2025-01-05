@@ -3,6 +3,7 @@ import uuid
 
 def submit_request(user_id, req_type, ticket_no, document_type, document_number, form_data):
     try:
+        user_id = int(user_id)
         connection = get_db_connection()
         description = f"Document Type: {document_type}, {document_type} number: {document_number}, "
         description += ", ".join([f"{key}:{value}" for key, value in form_data.items()])
@@ -23,6 +24,7 @@ def submit_request(user_id, req_type, ticket_no, document_type, document_number,
             }, 200
 
     except Exception as e:
+        print(e)
         return {"error": str(e)}, 500
 
     finally:
