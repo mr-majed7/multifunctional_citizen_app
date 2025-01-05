@@ -33,7 +33,7 @@ app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 applications = {}
 application_id_counter = 10000000000
-receipt_folder = "receipts"  
+receipt_folder = "tmp"  
 
 if not os.path.exists(receipt_folder):
     os.makedirs(receipt_folder)
