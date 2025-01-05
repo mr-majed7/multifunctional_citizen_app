@@ -150,7 +150,7 @@
     methods: {
       async fetchFines() {
         try {
-          const response = await fetch(`http://localhost:5000/trafficfine`);
+          const response = await fetch(`https://multifunctional-citizen-app-api.onrender.com/trafficfine`);
           if (!response.ok) {
             throw new Error("Failed to fetch fines.");
           }

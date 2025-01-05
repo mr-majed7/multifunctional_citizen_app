@@ -170,7 +170,7 @@ export default {
     async updateStatus(url){
       try {
         console.log(url);
-        const response = await axios.put(`http://localhost:5000/${url}`);
+        const response = await axios.put(`https://multifunctional-citizen-app-api.onrender.com/${url}`);
         if (!response.ok) {
           throw new Error("Failed to update status.");
         }else{
@@ -199,7 +199,7 @@ export default {
     },
     async add_payment(){
       try {
-      const response = await axios.post("http://localhost:5000/add_payment", {
+      const response = await axios.post("https://multifunctional-citizen-app-api.onrender.com/add_payment", {
         payment_id: this.paymentId,
         type: this.$route.query.type,
         amount: this.amount,

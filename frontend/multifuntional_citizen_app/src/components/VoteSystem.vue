@@ -47,7 +47,7 @@ export default {
   methods: {
     async getCandidates() {
       try {
-        const response = await axios.get('http://localhost:5000/candidates');
+        const response = await axios.get('https://multifunctional-citizen-app-api.onrender.com/candidates');
         this.candidates = response.data; 
       } catch (error) {
         console.error('Error fetching candidates:', error);
@@ -55,7 +55,7 @@ export default {
     },
     async submitVote(candidateId) {
       try {
-        const response = await axios.post('http://localhost:5000/vote', {
+        const response = await axios.post('https://multifunctional-citizen-app-api.onrender.com/vote', {
           candidate_id: candidateId
         });
         this.snackbar = true; 

@@ -109,7 +109,7 @@ export default {
     }
 
     try {
-      const response = await fetch(`http://localhost:5000/get_bills/${nidNumber}`);
+      const response = await fetch(`https://multifunctional-citizen-app-api.onrender.com/get_bills/${nidNumber}`);
       if (!response.ok) {
         throw new Error("Failed to fetch bills.");
       }

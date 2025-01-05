@@ -221,7 +221,7 @@ export default {
     async handleSignup() {
       try {
         const payload = userData[userData.length - 1];
-        const response = await fetch('http://localhost:5000/signup', {
+        const response = await fetch('https://multifunctional-citizen-app-api.onrender.com/signup', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(payload),

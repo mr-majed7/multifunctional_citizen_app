@@ -107,7 +107,7 @@
     }
   
     try {
-      const response = await fetch("http://localhost:5000/api/tin/register", {
+      const response = await fetch("https://multifunctional-citizen-app-api.onrender.com/api/tin/register", {
         method: "POST",
         body: formData,
       });

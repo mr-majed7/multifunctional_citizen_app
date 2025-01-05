@@ -85,7 +85,7 @@
     methods: {
       async handleLogin() {
         try {
-          const response = await fetch('http://localhost:5000/', {
+          const response = await fetch('https://multifunctional-citizen-app-api.onrender.com/', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ email: this.email, password: this.password })
