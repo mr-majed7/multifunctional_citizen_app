@@ -216,7 +216,7 @@ def register_tin():
     except Exception as e:
         return jsonify({'error': f'An error occurred: {str(e)}'}), 500
        
-DB_USER = "root"
+DB_USER = "admin"
 DB_PASSWORD = os.getenv("AWS_RDS_PASSWORD", "")
 DB_HOST = os.getenv("AWS_RDS_HOST", "localhost")
 DB_NAME = "multifunctional_citizen"
