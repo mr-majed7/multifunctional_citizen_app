@@ -35,9 +35,6 @@ applications = {}
 application_id_counter = 10000000000
 receipt_folder = "tmp"  
 
-if not os.path.exists(receipt_folder):
-    os.makedirs(receipt_folder)
-
 @app.route('/submit_application', methods=['POST'])
 def submit_application():
     form_data = request.json
@@ -221,7 +218,13 @@ def register_tin():
         return jsonify({'error': f'An error occurred: {str(e)}'}), 500
        
 #app.config['SQLALCHEMY_DATABASE_URI'] = config('DATABASE_URI')
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:a1b2c3d4e5@localhost/multifunctional_citizen'
+DB_USER = "root"
+DB_PASSWORD = os.getenv("AWS_RDS_PASSWORD", "")
+DB_HOST = os.getenv("AWS_RDS_HOST", "localhost")
+DB_NAME = "multifunctional_citizen"
+
+# Construct the database URL
+DATABASE_URL = f"mysql+pymysql://{DB_USER}:{DB_PASSWORD}@{DB_HOST}/{DB_NAME}"
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
