@@ -4,8 +4,6 @@ from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.orm import relationship
 import tempfile
 import re
-from decouple import config
-# from decouple import config
 from flask import Flask, request, jsonify, send_from_directory
 from flask_cors import CORS
 from db_connect import get_db_connection
@@ -224,8 +222,8 @@ DB_HOST = os.getenv("AWS_RDS_HOST", "localhost")
 DB_NAME = "multifunctional_citizen"
 
 # Construct the database URL
-app.config['SQLALCHEMY_DATABASE_URI'] = config('DATABASE_URL')
 DATABASE_URL = f"mysql+pymysql://{DB_USER}:{DB_PASSWORD}@{DB_HOST}/{DB_NAME}"
+app.config['SQLALCHEMY_DATABASE_URI'] = 'DATABASE_URL'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
