@@ -1,7 +1,7 @@
 <template>
     <v-app id="Traffic Fine">
       <v-app-bar color="#0d1117" dark app>
-        <v-toolbar-title>Citizen App - E-Nomination</v-toolbar-title>
+        <v-toolbar-title>Citizen App - Traffic Fine</v-toolbar-title>
         <v-spacer></v-spacer>
         <v-btn class="mx-2" color="primary" variant="tonal" ripple @click="goToHome">
           Home
@@ -10,39 +10,8 @@
           Logout
         </v-btn>
       </v-app-bar>
-  
-      <v-container fluid class="background-container">
-        <v-layout>
-          <v-navigation-drawer
-          v-model="drawer"
-            :rail="rail"
-            permanent
-            class="elevation-2 full-height no-gap"
-            @click="rail = false"
-          >
-            <v-list-item
-              prepend-avatar="/citizen_logo.png"
-              title="Welcome To Citizen App"
-            >
-              <template v-slot:append>
-                <v-btn icon variant="text" @click.stop="rail = !rail">
-                  <v-icon>{{ rail ? "mdi-chevron-left" : "mdi-chevron-right" }}</v-icon>
-                </v-btn>
-              </template>
-            </v-list-item>
-  
-            <v-divider></v-divider>
-  
-            <v-list dense nav>
-              <v-list-item prepend-icon="mdi-update" title="Edit Profile" ripple @click="goToHome"></v-list-item>
-              <v-list-item prepend-icon="mdi-file-document-edit" title="Update Document" ripple @click="goToHome"></v-list-item>
-              <v-list-item prepend-icon="mdi-numeric" title="Important Numbers" ripple @click="goToHome"></v-list-item>
-            </v-list>
-          </v-navigation-drawer>
-  
-        
           <v-main>
-            <v-container fluid class="fill-height gradient-background">
+            <v-container fluid class="fill-height ">
               <v-row justify="center" align="center">
                 <v-col cols="12" sm="10" md="8" lg="6">
                   <v-card class="fine-card" elevation="10">
@@ -132,8 +101,6 @@
               </v-row>
             </v-container>
           </v-main>
-        </v-layout>
-      </v-container>
     </v-app>
   </template>
   
@@ -188,14 +155,10 @@
   };
   </script>
   
-  <style scoped>
-  .background-container {
-    background: linear-gradient(135deg, black, #1a1a1a);
-    padding-top: 64px; 
-  }
+  <style>
   
   .fine-card {
-    background: linear-gradient(135deg, #a7a5a4 0%, #2b4162 100%);
+    background: linear-gradient(135deg, #58745c 0%, #2b4162 100%);
     border-radius: 16px;
     overflow: hidden;
     transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);

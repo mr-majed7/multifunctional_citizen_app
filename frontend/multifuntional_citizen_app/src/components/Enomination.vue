@@ -10,44 +10,13 @@
           Logout
         </v-btn>
       </v-app-bar>
-  
-      <v-container fluid class="background-container">
-        <v-layout>
-          <v-navigation-drawer
-            v-model="drawer"
-            :rail="rail"
-            permanent
-            class="elevation-2 full-height no-gap"
-            @click="rail = false"
-
-          >
-            <v-list-item
-              prepend-avatar="/citizen_logo.png"
-              title="Welcome To Citizen App"
-            >
-              <template v-slot:append>
-                <v-btn icon variant="text" @click.stop="rail = !rail">
-                  <v-icon>{{ rail ? "mdi-chevron-left" : "mdi-chevron-right" }}</v-icon>
-                </v-btn>
-              </template>
-            </v-list-item>
-  
-            <v-divider></v-divider>
-  
-            <v-list dense nav>
-              <v-list-item prepend-icon="mdi-update" title="Edit Profile" ripple @click="goToHome"></v-list-item>
-              <v-list-item prepend-icon="mdi-file-document-edit" title="Update Document" ripple @click="goToHome"></v-list-item>
-              <v-list-item prepend-icon="mdi-numeric" title="Important Numbers" ripple @click="goToHome"></v-list-item>
-            </v-list>
-          </v-navigation-drawer>
-
           <v-main>
             <v-container fluid class="fill-height">
               <v-row align="center" justify="center">
-                <v-col :cols="cols" :sm="cols" :md="cols" :lg="cols" :xl="cols" class="nomination-card-container">
+                <v-col cols="12" sm="10" md="8" lg="6">
                   <v-card class="nomination-card" elevation="10">
                     <v-card-title class="text-h4 font-weight-bold text-center py-4 primary white--text">
-                      E-Nomination for Property
+                      E-Nomination 
                     </v-card-title>
   
                     <v-card-text class="pa-6">
@@ -141,8 +110,6 @@
               </v-row>
             </v-container>
           </v-main>
-        </v-layout>
-      </v-container>
     </v-app>
   </template>
   
@@ -199,7 +166,7 @@
   }
   
   .nomination-card {
-    background: linear-gradient(135deg, #a7a5a4 0%, #2b4162 100%);
+    background: linear-gradient(135deg, #58745c 0%, #2b4162 100%);
     border-radius: 16px;
     overflow: hidden;
     transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
@@ -214,13 +181,6 @@
     height: 100vh;
   }
   
-  .v-navigation-drawer {
-    position: fixed;
-    top: 64px; 
-    left: 0;
-    height: calc(100vh - 64px); 
-    margin: 0 !important;
-    padding: 0 !important;
-  }
+
   </style>
   

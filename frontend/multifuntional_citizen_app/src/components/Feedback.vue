@@ -10,37 +10,6 @@
           Logout
         </v-btn>
       </v-app-bar>
-  
-      <v-container fluid class="background-container">
-        <v-layout>
-          <v-navigation-drawer
-          v-model="drawer"
-            :rail="rail"
-            permanent
-            class="elevation-2 full-height no-gap"
-            @click="rail = false"
-
-          >
-            <v-list-item
-              prepend-avatar="/citizen_logo.png"
-              title="Welcome To Citizen App"
-            >
-              <template v-slot:append>
-                <v-btn icon variant="text" @click.stop="rail = !rail">
-                  <v-icon>{{ rail ? "mdi-chevron-left" : "mdi-chevron-right" }}</v-icon>
-                </v-btn>
-              </template>
-            </v-list-item>
-  
-            <v-divider></v-divider>
-  
-            <v-list dense nav>
-              <v-list-item prepend-icon="mdi-update" title="Edit Profile" ripple @click="goToHome"></v-list-item>
-              <v-list-item prepend-icon="mdi-file-document-edit" title="Update Document" ripple @click="goToHome"></v-list-item>
-              <v-list-item prepend-icon="mdi-numeric" title="Important Numbers" ripple @click="goToHome"></v-list-item>
-            </v-list>
-          </v-navigation-drawer>
-  
           <v-main>
             <v-container fluid class="fill-height">
               <v-row align="center" justify="center">
@@ -147,8 +116,6 @@
               </v-row>
             </v-container>
           </v-main>
-        </v-layout>
-      </v-container>
     </v-app>
   </template>
   
@@ -229,10 +196,7 @@
   </script>
 
 <style>
-.background-container {
-  background: linear-gradient(135deg, black, #1a1a1a);
-  padding-top: 64px; 
-}
+
 
 .survey-card-container {
   margin-bottom: 24px; 
