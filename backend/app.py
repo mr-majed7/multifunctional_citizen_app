@@ -43,7 +43,7 @@ def submit_application():
 
     try:
         
-        connection = mysql.connector.connect(**db_config)
+        connection = get_db_connection()
         cursor = connection.cursor()
 
        
@@ -78,15 +78,7 @@ def submit_application():
         application_id = cursor.lastrowid
 
        
-        receipt_path = os.path.join(receipt_folder, f"receipt_{application_id}.txt")
-        with open(receipt_path, "w") as f:
-            f.write(f"Application ID: {application_id}\n")
-            f.write(f"Full Name: {form_data.get('full_name', 'N/A')}\n")
-            f.write(f"Passport Type: {form_data.get('passport_type', 'N/A')}\n")
-            f.write(f"Mobile Number: {form_data.get('country_code', '')} {form_data.get('mobile_number', '')}\n")
-            f.write(f"Email: {form_data.get('email', 'N/A')}\n")
-
-        
+        receipt_path = os.path.join(receipt_folder, f"receipt_{application_id}.txt")        
         cursor.execute("UPDATE applications SET receipt_path = %s WHERE id = %s", (receipt_path, application_id))
         connection.commit()
 
