@@ -155,7 +155,7 @@
       <div v-if="currentStep === 5">
         <h2 style="color: green;">Thank You!</h2>
         <p>You are done with your Passport Application.</p>
-        <button @click="this.$router.push('/home')">Home</button>
+        <button @click="this.$router.push('/home')">Home </button>
       </div>
     </div>
   </template>
