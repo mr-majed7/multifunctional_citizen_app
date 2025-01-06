@@ -17,8 +17,8 @@ export default {
   components: {
   },
   mounted() {
-    localStorage.setItem('user_id', 1);
-    localStorage.setItem('nid_number', '123457890123');
+    localStorage.setItem('user_id', 4);
+    localStorage.setItem('nid_number', '9581710416');
   }
 }
 </script>
