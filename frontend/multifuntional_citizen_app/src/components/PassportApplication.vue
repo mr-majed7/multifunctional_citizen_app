@@ -265,6 +265,7 @@
         link.click();
       } catch (error) {
         console.error("Error downloading receipt:", error.message);
+        this.$router.push("/home");
       }
     },
   },
